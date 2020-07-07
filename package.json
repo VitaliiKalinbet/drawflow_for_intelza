@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/jerosoler/Drawflow/issues"
   },
-  "homepage": "https://github.com/jerosoler/Drawflow#readme",
+  "homepage": "https://github.com/VitaliiKalinbet/drawflow_for_intelza",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
