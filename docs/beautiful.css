@@ -56,6 +56,9 @@ header a {
   padding-left: 20px;
   cursor: move;
   user-select: none;
+
+  display: flex;
+  align-items: center;
 }
 
 .menu {
@@ -178,6 +181,7 @@ header a {
 
   .col .drag-drawflow span {
     display: none;
+    padding-left: 10px;
   }
 
   #drawflow {
@@ -362,4 +366,10 @@ header a {
   .modal-content {
     width: 80%;
   }
+}
+
+.block-image {
+  width: 30px;
+  height: 30px;
+  padding-right: 15px;
 }
