@@ -171,7 +171,6 @@
         .precanvas.getBoundingClientRect().y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight *
           editor.zoom)));
 
-
       switch (name) {
         case 'STT':
           var STT = `
@@ -179,7 +178,7 @@
           <img class="block-image" src="https://static.thenounproject.com/png/1425923-200.png" alt="STT"><div class="title-box">STT Ждем привет</div>
         </div>
         `;
-          editor.addNode('STT', 0, 1, pos_x, pos_y, 'STT', {}, STT);
+          editor.addNode('STT', 5, 3, pos_x, pos_y, 'STT', {}, STT);
           break;
         case 'NLU':
           var NLU = `
@@ -187,7 +186,7 @@
             <img class="block-image" src="https://static.thenounproject.com/png/1409678-200.png" alt="NLU"><div class="title-box">NLU Алло ?</div>
           </div>
           `
-          editor.addNode('NLU', 1, 0, pos_x, pos_y, 'NLU', {}, NLU);
+          editor.addNode('NLU', 1, 1, pos_x, pos_y, 'NLU', {}, NLU);
           break;
         case 'TTS':
           var TTS = `
@@ -195,7 +194,7 @@
             <img class="block-image" src="https://static.thenounproject.com/png/1425924-200.png" alt="TTS"><div class="title-box">TTS Основной текст</div>
           </div>
           `;
-          editor.addNode('TTS', 0, 1, pos_x, pos_y, 'TTS', {
+          editor.addNode('TTS', 5, 5, pos_x, pos_y, 'TTS', {
             "name": ''
           }, TTS);
           break;
@@ -205,7 +204,7 @@
             <img class="block-image" src="https://static.thenounproject.com/png/981389-200.png" alt="SMS"><div class="title-box">SMS Отправим смс</div>
           </div>
           `;
-          editor.addNode('SMS', 1, 0, pos_x, pos_y, 'SMS', {
+          editor.addNode('SMS', 1, 1, pos_x, pos_y, 'SMS', {
             "channel": 'channel_3'
           }, SMS);
           break;
