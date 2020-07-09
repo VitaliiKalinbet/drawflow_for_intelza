@@ -368,8 +368,38 @@ header a {
   }
 }
 
+/* my custom code */
+
 .block-image {
   width: 30px;
   height: 30px;
   padding-right: 15px;
+}
+
+.right-modal {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  bottom: 0;
+  width: 30%;
+  height: calc(100vh - 67px);
+  background-color: white;
+  border: 1px solid black;
+  box-sizing: border-box;
+  padding: 30px;
+}
+
+.hide {
+  display: none;
+}
+
+.close-right-modal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.delete-block {
+  cursor: pointer;
 }

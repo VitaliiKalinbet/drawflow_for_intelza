@@ -78,6 +78,16 @@
         </div>
       </div>
     </div>
+
+    <div class="right-modal hide">
+      <span class="close-right-modal">CLOSE</span>
+
+      <button class="delete-block">Удалить блок</button>
+
+      <div class="right-modal-content"></div>
+
+      <button class="save-block">Сохранить изменения</button>
+    </div>
   </div>
 
   <script>
@@ -93,7 +103,60 @@
       console.log("Node removed " + id);
     })
     editor.on('nodeSelected', function (id) {
-      console.log("Node selected " + id);
+      const refs = {
+        rightModal: document.querySelector('.right-modal'),
+        closeRightModal: document.querySelector('.close-right-modal'),
+        deleteBlock: document.querySelector('.delete-block'),
+        rightModalContent: document.querySelector('.right-modal-content'),
+        saveBlock: document.querySelector('.save-block'),
+      }
+
+      refs.rightModal.classList.remove('hide');
+      refs.closeRightModal.addEventListener('click', closeRightModal);
+      refs.deleteBlock.addEventListener('click', deleteCurrentBlock);
+      refs.saveBlock.addEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
+
+      function closeRightModal() {
+        removeEditableAtributeToAllContent();
+        refs.rightModal.classList.add('hide');
+        refs.rightModal.removeEventListener('click', closeRightModal);
+        refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
+        refs.rightModalContent.innerHTML = '';
+      }
+
+      function deleteCurrentBlock() {
+        editor.removeNodeId('node-' + id);
+        closeRightModal();
+      }
+
+      function addNodeContentToRightModal() {
+        const content = document.querySelector('#node-' + id).querySelector('.drawflow_content_node').innerHTML;
+        refs.rightModalContent.insertAdjacentHTML('beforeend', content)
+      }
+      addNodeContentToRightModal();
+
+      function addEditableAtributeToAllContent() {
+        refs.rightModalContent.querySelector('p').setAttribute("contenteditable", true);
+      }
+      addEditableAtributeToAllContent();
+
+      function removeEditableAtributeToAllContent() {
+        refs.rightModalContent.querySelector('p').setAttribute("contenteditable", false);
+      }
+
+      function deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange() {
+        const contentWrapperDiv = refs.rightModalContent.querySelector("#content-wrapper");
+        const dataName = contentWrapperDiv.getAttribute('data-name');
+        const dataNumIn = Number(contentWrapperDiv.getAttribute('data-num_in'));
+        const dataNumOut = Number(contentWrapperDiv.getAttribute('data-num_out'));
+        const dataElePosX = Number(contentWrapperDiv.getAttribute('data-ele_pos_x'));
+        const dataElePosY = Number(contentWrapperDiv.getAttribute('data-ele_pos_y'));
+        const dataClassoverride = contentWrapperDiv.getAttribute('data-classoverride');
+
+        const blockHtml = refs.rightModalContent.innerHTML;
+        deleteCurrentBlock();
+        editor.addNode(dataName, dataNumIn, dataNumOut, dataElePosX, dataElePosY, dataClassoverride, {}, blockHtml);
+      }
     })
     editor.on('moduleCreated', function (name) {
       console.log("Module Created " + name);
@@ -110,7 +173,7 @@
       console.log(connection);
     })
     editor.on('mouseMove', function (position) {
-      console.log('Position mouse x:' + position.x + ' y:' + position.y);
+      // console.log('Position mouse x:' + position.x + ' y:' + position.y);
     })
     editor.on('zoom', function (zoom) {
       console.log('Zoom level ' + zoom);
@@ -179,8 +242,8 @@
       switch (name) {
         case 'STT':
           var STT = `
-        <div>
-          <p style="text-align:center;">Ждем привет</p>
+        <div id="content-wrapper" data-name="STT" data-num_in=5 data-num_out=3 data-ele_pos_x=${pos_x} data-ele_pos_y=${pos_y} data-classoverride="STT" data-data={}> 
+          <p style="text-align:center;">Основной текст</p>
           <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/1425923-200.png" alt="STT"> <span>STT</span></div>
         </div>
         `;
@@ -188,7 +251,7 @@
           break;
         case 'NLU':
           var NLU = `
-          <div>
+          <div id="content-wrapper" data-name="NLU" data-num_in=1 data-num_out=1 data-ele_pos_x=${pos_x} data-ele_pos_y=${pos_y} data-classoverride="NLU" data-data={}>
             <p style="text-align:center;">Алло ?</p>
             <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/1409678-200.png" alt="NLU"> <span>NLU</span></div>
           </div>
@@ -197,7 +260,7 @@
           break;
         case 'TTS':
           var TTS = `
-          <div>
+          <div id="content-wrapper" data-name="TTS" data-num_in=5 data-num_out=5 data-ele_pos_x=${pos_x} data-ele_pos_y=${pos_y} data-classoverride="TTS" data-data={}>
             <p style="text-align:center;">Основной текст</p>
             <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/1425924-200.png" alt="TTS"> <span>TTS</span></div>
           </div>
@@ -208,7 +271,7 @@
           break;
         case 'SMS':
           var SMS = `
-          <div>
+          <div id="content-wrapper" data-name="SMS" data-num_in=1 data-num_out=1 data-ele_pos_x=${pos_x} data-ele_pos_y=${pos_y} data-classoverride="SMS" data-data={}>
             <p style="text-align:center;">Отправим смс</p>
             <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/981389-200.png" alt="SMS"> <span>SMS</span></div>
           </div>
@@ -220,7 +283,7 @@
 
         case 'HELLO':
           var HELLO = `
-          <div>
+          <div id="content-wrapper" data-name="HELLO" data-num_in=0 data-num_out=1 data-ele_pos_x=${pos_x} data-ele_pos_y=${pos_y} data-classoverride="HELLO" data-data={}>
             <p style="text-align:center;">Привет</p>
             <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/78694-200.png"
           alt="HELLO"> <span>HELLO</span></div>
@@ -233,7 +296,7 @@
 
         case 'BYE':
           var BYE = `
-          <div>
+          <div id="content-wrapper" data-name="BYE" data-num_in=5 data-num_out=0 data-ele_pos_x=${pos_x} data-ele_pos_y=${pos_y} data-classoverride="BYE" data-data={}>
             <p style="text-align:center;">Пока</p>
             <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/981389-200.png" alt="BYE"> <span>BYE</span></div>
           </div>
