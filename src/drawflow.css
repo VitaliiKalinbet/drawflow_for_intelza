@@ -154,3 +154,13 @@
 .menu ul {
   display: none;
 }
+
+.custom-title {
+  text-align: center;
+}
+
+.title-box {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}

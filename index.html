@@ -29,22 +29,27 @@
   <div class="wrapper">
     <div class="col">
       <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="STT">
-        <img class="block-image" src="https://static.thenounproject.com/png/1425923-200.png" alt="STT"><span>STT</span>
+        <img class="block-image" src="https://static.thenounproject.com/png/1425923-200.png"
+          alt="STT"><span>Speech-To-Text</span>
       </div>
       <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="NLU">
-        <img class="block-image" src="https://static.thenounproject.com/png/1409678-200.png" alt="NLU"><span>NLU</span>
+        <img class="block-image" src="https://static.thenounproject.com/png/1409678-200.png" alt="NLU"><span>NLU
+          (intent)</span>
       </div>
       <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="TTS">
-        <img class="block-image" src="https://static.thenounproject.com/png/1425924-200.png" alt="TTS"><span>TTS</span>
+        <img class="block-image" src="https://static.thenounproject.com/png/1425924-200.png"
+          alt="TTS"><span>Text-To-Speech</span>
       </div>
       <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="SMS">
         <img class="block-image" src="https://static.thenounproject.com/png/981389-200.png" alt="SMS"><span>SMS</span>
       </div>
       <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="HELLO">
-        <span>HELLO</span>
+        <img class="block-image" src="https://static.thenounproject.com/png/78694-200.png" alt="HELLO"><span>HELLO
+          (start)</span>
       </div>
       <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="BYE">
-        <span>BYE</span>
+        <img class="block-image" src="https://static.thenounproject.com/png/981389-200.png" alt="BYE"><span>BYE
+          (end)</span>
       </div>
 
     </div>
@@ -175,7 +180,8 @@
         case 'STT':
           var STT = `
         <div>
-          <img class="block-image" src="https://static.thenounproject.com/png/1425923-200.png" alt="STT"><div class="title-box">STT Ждем привет</div>
+          <p style="text-align:center;">Ждем привет</p>
+          <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/1425923-200.png" alt="STT"> <span>STT</span></div>
         </div>
         `;
           editor.addNode('STT', 5, 3, pos_x, pos_y, 'STT', {}, STT);
@@ -183,7 +189,8 @@
         case 'NLU':
           var NLU = `
           <div>
-            <img class="block-image" src="https://static.thenounproject.com/png/1409678-200.png" alt="NLU"><div class="title-box">NLU Алло ?</div>
+            <p style="text-align:center;">Алло ?</p>
+            <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/1409678-200.png" alt="NLU"> <span>NLU</span></div>
           </div>
           `
           editor.addNode('NLU', 1, 1, pos_x, pos_y, 'NLU', {}, NLU);
@@ -191,7 +198,8 @@
         case 'TTS':
           var TTS = `
           <div>
-            <img class="block-image" src="https://static.thenounproject.com/png/1425924-200.png" alt="TTS"><div class="title-box">TTS Основной текст</div>
+            <p style="text-align:center;">Основной текст</p>
+            <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/1425924-200.png" alt="TTS"> <span>TTS</span></div>
           </div>
           `;
           editor.addNode('TTS', 5, 5, pos_x, pos_y, 'TTS', {
@@ -201,7 +209,8 @@
         case 'SMS':
           var SMS = `
           <div>
-            <img class="block-image" src="https://static.thenounproject.com/png/981389-200.png" alt="SMS"><div class="title-box">SMS Отправим смс</div>
+            <p style="text-align:center;">Отправим смс</p>
+            <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/981389-200.png" alt="SMS"> <span>SMS</span></div>
           </div>
           `;
           editor.addNode('SMS', 1, 1, pos_x, pos_y, 'SMS', {
@@ -212,10 +221,12 @@
         case 'HELLO':
           var HELLO = `
           <div>
-            <div class="title-box">HELLO Привет</div>
+            <p style="text-align:center;">Привет</p>
+            <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/78694-200.png"
+          alt="HELLO"> <span>HELLO</span></div>
           </div>
           `;
-          editor.addNode('HELLO', 1, 0, pos_x, pos_y, 'HELLO', {
+          editor.addNode('HELLO', 0, 1, pos_x, pos_y, 'HELLO', {
             "channel": 'channel_3'
           }, HELLO);
           break;
@@ -223,10 +234,11 @@
         case 'BYE':
           var BYE = `
           <div>
-            <div class="title-box">BYE Пока</div>
+            <p style="text-align:center;">Пока</p>
+            <div class="title-box" style="display:flex;align-items:center;justify-content:center;"><img class="block-image" src="https://static.thenounproject.com/png/981389-200.png" alt="BYE"> <span>BYE</span></div>
           </div>
           `;
-          editor.addNode('BYE', 1, 0, pos_x, pos_y, 'BYE', {
+          editor.addNode('BYE', 5, 0, pos_x, pos_y, 'BYE', {
             "channel": 'channel_3'
           }, BYE);
           break;
