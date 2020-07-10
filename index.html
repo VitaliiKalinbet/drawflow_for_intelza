@@ -103,16 +103,21 @@
       saveBlock: document.querySelector('.save-block'),
     }
 
+    let blockId;
+
     function closeRightModal() {
       removeEditableAtributeToAllContent();
       refs.rightModal.classList.add('hide');
       refs.rightModal.removeEventListener('click', closeRightModal);
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
       refs.rightModalContent.innerHTML = '';
+      refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
+      refs.saveBlock.removeEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
+      blockId = null;
     }
 
-    function deleteCurrentBlock(id) {
-      editor.removeNodeId('node-' + id);
+    function deleteCurrentBlock() {
+      editor.removeNodeId('node-' + blockId);
       closeRightModal();
     }
 
@@ -130,7 +135,7 @@
       refs.rightModalContent.querySelector('p').setAttribute("contenteditable", false);
     }
 
-    function deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange(id) {
+    function deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange() {
       // const contentWrapperDiv = refs.rightModalContent.querySelector("#content-wrapper");
       // const dataName = contentWrapperDiv.getAttribute('data-name');
       // const dataNumIn = Number(contentWrapperDiv.getAttribute('data-num_in'));
@@ -145,12 +150,12 @@
 
       const exportdata = editor.export();
       console.log('exportdata :>> ', exportdata);
-      console.log('id :>> ', id);
-      console.log('exportdata.drawflow.Home.data :>> ', exportdata.drawflow.Home.data);
+      console.log('id :>> ', blockId);
+      // console.log('exportdata.drawflow.Home.data :>> ', exportdata.drawflow.Home.data);
       // exportdata.drawflow.Home.data.id.html = 'Hello';
-      console.log('exportdata.drawflow.Home.data[id].html :>> ', exportdata.drawflow.Home.data[id].html);
-      exportdata.drawflow.Home.data[id].html = refs.rightModalContent.innerHTML;
-      // console.log('exportdata new :>> ', exportdata);
+      // console.log('exportdata.drawflow.Home.data[id].html :>> ', exportdata.drawflow.Home.data[id].html);
+      exportdata.drawflow.Home.data[blockId].html = refs.rightModalContent.innerHTML;
+      console.log('exportdata new :>> ', exportdata);
       editor.import(exportdata);
     };
 
@@ -163,22 +168,17 @@
       closeRightModal();
     })
     editor.on('nodeSelected', function (id) {
+      blockId = id;
+      refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
+      refs.saveBlock.removeEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
       refs.rightModal.classList.remove('hide');
       refs.closeRightModal.addEventListener('click', closeRightModal);
-      refs.deleteBlock.addEventListener('click', onDeleteButton);
-      refs.saveBlock.addEventListener('click', onSaveButton);
+      refs.deleteBlock.addEventListener('click', deleteCurrentBlock);
+      refs.saveBlock.addEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
 
       addNodeContentToRightModal(id);
 
       addEditableAtributeToAllContent();
-
-      function onSaveButton() {
-        deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange(id);
-      }
-
-      function onDeleteButton() {
-        deleteCurrentBlock(id);
-      }
     })
     editor.on('moduleCreated', function (name) {
       console.log("Module Created " + name);
