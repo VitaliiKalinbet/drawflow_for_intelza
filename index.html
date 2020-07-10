@@ -95,67 +95,89 @@
     const editor = new Drawflow(id);
     editor.start();
 
+    const refs = {
+      rightModal: document.querySelector('.right-modal'),
+      closeRightModal: document.querySelector('.close-right-modal'),
+      deleteBlock: document.querySelector('.delete-block'),
+      rightModalContent: document.querySelector('.right-modal-content'),
+      saveBlock: document.querySelector('.save-block'),
+    }
+
+    function closeRightModal() {
+      removeEditableAtributeToAllContent();
+      refs.rightModal.classList.add('hide');
+      refs.rightModal.removeEventListener('click', closeRightModal);
+      refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
+      refs.rightModalContent.innerHTML = '';
+    }
+
+    function deleteCurrentBlock(id) {
+      editor.removeNodeId('node-' + id);
+      closeRightModal();
+    }
+
+    function addNodeContentToRightModal(id) {
+      const content = document.querySelector('#node-' + id).querySelector('.drawflow_content_node').innerHTML;
+      refs.rightModalContent.innerHTML = "";
+      refs.rightModalContent.insertAdjacentHTML('beforeend', content)
+    }
+
+    function addEditableAtributeToAllContent() {
+      refs.rightModalContent.querySelector('p').setAttribute("contenteditable", true);
+    }
+
+    function removeEditableAtributeToAllContent() {
+      refs.rightModalContent.querySelector('p').setAttribute("contenteditable", false);
+    }
+
+    function deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange(id) {
+      // const contentWrapperDiv = refs.rightModalContent.querySelector("#content-wrapper");
+      // const dataName = contentWrapperDiv.getAttribute('data-name');
+      // const dataNumIn = Number(contentWrapperDiv.getAttribute('data-num_in'));
+      // const dataNumOut = Number(contentWrapperDiv.getAttribute('data-num_out'));
+      // const dataElePosX = Number(contentWrapperDiv.getAttribute('data-ele_pos_x'));
+      // const dataElePosY = Number(contentWrapperDiv.getAttribute('data-ele_pos_y'));
+      // const dataClassoverride = contentWrapperDiv.getAttribute('data-classoverride');
+
+      // const blockHtml = refs.rightModalContent.innerHTML;
+      // deleteCurrentBlock();
+      // editor.addNode(dataName, dataNumIn, dataNumOut, dataElePosX, dataElePosY, dataClassoverride, {}, blockHtml);
+
+      const exportdata = editor.export();
+      console.log('exportdata :>> ', exportdata);
+      console.log('id :>> ', id);
+      console.log('exportdata.drawflow.Home.data :>> ', exportdata.drawflow.Home.data);
+      // exportdata.drawflow.Home.data.id.html = 'Hello';
+      console.log('exportdata.drawflow.Home.data[id].html :>> ', exportdata.drawflow.Home.data[id].html);
+      exportdata.drawflow.Home.data[id].html = refs.rightModalContent.innerHTML;
+      // console.log('exportdata new :>> ', exportdata);
+      editor.import(exportdata);
+    };
+
     // Events!
     editor.on('nodeCreated', function (id) {
       console.log("Node created " + id);
     })
     editor.on('nodeRemoved', function (id) {
       console.log("Node removed " + id);
+      closeRightModal();
     })
     editor.on('nodeSelected', function (id) {
-      const refs = {
-        rightModal: document.querySelector('.right-modal'),
-        closeRightModal: document.querySelector('.close-right-modal'),
-        deleteBlock: document.querySelector('.delete-block'),
-        rightModalContent: document.querySelector('.right-modal-content'),
-        saveBlock: document.querySelector('.save-block'),
-      }
-
       refs.rightModal.classList.remove('hide');
       refs.closeRightModal.addEventListener('click', closeRightModal);
-      refs.deleteBlock.addEventListener('click', deleteCurrentBlock);
-      refs.saveBlock.addEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
+      refs.deleteBlock.addEventListener('click', onDeleteButton);
+      refs.saveBlock.addEventListener('click', onSaveButton);
 
-      function closeRightModal() {
-        removeEditableAtributeToAllContent();
-        refs.rightModal.classList.add('hide');
-        refs.rightModal.removeEventListener('click', closeRightModal);
-        refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
-        refs.rightModalContent.innerHTML = '';
-      }
+      addNodeContentToRightModal(id);
 
-      function deleteCurrentBlock() {
-        editor.removeNodeId('node-' + id);
-        closeRightModal();
-      }
-
-      function addNodeContentToRightModal() {
-        const content = document.querySelector('#node-' + id).querySelector('.drawflow_content_node').innerHTML;
-        refs.rightModalContent.insertAdjacentHTML('beforeend', content)
-      }
-      addNodeContentToRightModal();
-
-      function addEditableAtributeToAllContent() {
-        refs.rightModalContent.querySelector('p').setAttribute("contenteditable", true);
-      }
       addEditableAtributeToAllContent();
 
-      function removeEditableAtributeToAllContent() {
-        refs.rightModalContent.querySelector('p').setAttribute("contenteditable", false);
+      function onSaveButton() {
+        deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange(id);
       }
 
-      function deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange() {
-        const contentWrapperDiv = refs.rightModalContent.querySelector("#content-wrapper");
-        const dataName = contentWrapperDiv.getAttribute('data-name');
-        const dataNumIn = Number(contentWrapperDiv.getAttribute('data-num_in'));
-        const dataNumOut = Number(contentWrapperDiv.getAttribute('data-num_out'));
-        const dataElePosX = Number(contentWrapperDiv.getAttribute('data-ele_pos_x'));
-        const dataElePosY = Number(contentWrapperDiv.getAttribute('data-ele_pos_y'));
-        const dataClassoverride = contentWrapperDiv.getAttribute('data-classoverride');
-
-        const blockHtml = refs.rightModalContent.innerHTML;
-        deleteCurrentBlock();
-        editor.addNode(dataName, dataNumIn, dataNumOut, dataElePosX, dataElePosY, dataClassoverride, {}, blockHtml);
+      function onDeleteButton() {
+        deleteCurrentBlock(id);
       }
     })
     editor.on('moduleCreated', function (name) {
