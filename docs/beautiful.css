@@ -39,7 +39,7 @@ header a {
 
 .wrapper {
   width: 100%;
-  height: calc(100vh - 67px);
+  height: 100vh;
   display: flex;
 }
 
@@ -118,6 +118,21 @@ header a {
   z-index: 5;
 }
 
+.btn-import {
+  float: right;
+  position: absolute;
+  top: 10px;
+  right: 180px;
+  color: white;
+  font-weight: bold;
+  border: 1px solid #0e5ba3;
+  background: #4ea9ff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 5;
+}
+
 .swal-wide {
   width: 80% !important;
 }
@@ -165,8 +180,7 @@ header a {
 #drawflow {
   position: relative;
   width: calc(100vw - 301px);
-  height: calc(100% - 50px);
-  top: 40px;
+  height: 100%;
   background: var(--background-color);
   background-size: 25px 25px;
   background-image:
