@@ -74,8 +74,6 @@
         <button class="delete-block">Удалить блок</button>
 
         <div class="right-modal-content"></div>
-
-        <button class="save-block">Сохранить изменения</button>
       </div>
     </div>
 
@@ -91,8 +89,6 @@
       closeRightModal: document.querySelector('.btn-close-right-modal'),
       deleteBlock: document.querySelector('.delete-block'),
       rightModalContent: document.querySelector('.right-modal-content'),
-      saveBlock: document.querySelector('.save-block'),
-      btnSaveInJson: document.querySelector('#btn-download-json-file'),
       btnSaveInJson: document.querySelector('#btn-download-json-file'),
       toCloseRightModal: document.querySelector('.to-close-right-modal'),
     };
@@ -121,15 +117,16 @@
 
       // console.log('closeRightModal work');
 
+      // so that changes are saved when you close the module:
+      deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange();
+
+      refs.toCloseRightModal.classList.toggle('hide');
       refs.rightModal.classList.add('hide');
       refs.rightModal.removeEventListener('click', closeRightModal);
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
       refs.rightModalContent.innerHTML = '';
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
-      refs.saveBlock.removeEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
       blockId = null;
-
-      refs.toCloseRightModal.classList.toggle('hide');
     }
 
     function deleteCurrentBlock() {
@@ -228,11 +225,9 @@
     function openRightModal(e) {
       blockId = e.target.dataset.id;
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
-      refs.saveBlock.removeEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
       refs.rightModal.classList.remove('hide');
       refs.closeRightModal.addEventListener('click', closeRightModal);
       refs.deleteBlock.addEventListener('click', deleteCurrentBlock);
-      refs.saveBlock.addEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
 
       addNodeContentToRightModal(blockId);
 
