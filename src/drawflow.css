@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   position: absolute;
-  background: cyan;
+  /* background: cyan; */
   width: 160px;
   min-height: 40px;
   border-radius: 4px;
@@ -33,7 +33,7 @@
 }
 
 .drawflow .drawflow-node.selected {
-  background: red;
+  background: cyan;
 }
 
 .drawflow .drawflow-node:hover {
