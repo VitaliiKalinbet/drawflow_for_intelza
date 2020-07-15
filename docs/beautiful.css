@@ -384,7 +384,7 @@ body {
   cursor: pointer;
 }
 
-/* class who add when create node */
+/* class who add when create node - start */
 .phrase {
   background: #d6ffeb;
 }
@@ -395,4 +395,11 @@ body {
 
 .sms {
   background: #fbf7a7;
+}
+
+/* class who add when create node - end */
+
+.block-title {
+  text-align: center;
+  cursor: pointer;
 }

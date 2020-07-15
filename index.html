@@ -194,16 +194,8 @@
     document.getElementById('files').addEventListener('change', handleFileSelect, false);
     // code for import data from someFile.json - end
 
-    // Events!
-    editor.on('nodeCreated', function (id) {
-      console.log("Node created " + id);
-    })
-    editor.on('nodeRemoved', function (id) {
-      console.log("Node removed " + id);
-      closeRightModal();
-    })
-    editor.on('nodeSelected', function (id) {
-      blockId = id;
+    function openRightModal(e) {
+      blockId = e.target.dataset.id;
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
       refs.saveBlock.removeEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
       refs.rightModal.classList.remove('hide');
@@ -211,11 +203,25 @@
       refs.deleteBlock.addEventListener('click', deleteCurrentBlock);
       refs.saveBlock.addEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
 
-      addNodeContentToRightModal(id);
+      addNodeContentToRightModal(blockId);
 
       addEditableAtributeToAllContent();
+    }
 
-      // onSaveDataInFileJson();
+    // Events!
+    editor.on('nodeCreated', function (id) {
+      // console.log("Node created " + id);
+      const blockId = '#node-' + id;
+      const blockTitle = document.querySelector(blockId).querySelector('.block-title');
+      blockTitle.setAttribute('data-id', id)
+      blockTitle.addEventListener('click', openRightModal)
+    })
+    editor.on('nodeRemoved', function (id) {
+      console.log("Node removed " + id);
+      closeRightModal();
+    })
+    editor.on('nodeSelected', function (id) {
+
     })
     editor.on('moduleCreated', function (name) {
       console.log("Module Created " + name);
@@ -301,21 +307,21 @@
       switch (name) {
         case 'PHRASE':
           var PHRASE = `
-          <p style="text-align:center;">Фраза</p>
+          <p class="block-title">Фраза</p>
         `;
           editor.addNode('PHRASE', 1, 1, pos_x, pos_y, 'phrase', {}, PHRASE);
           break;
 
         case 'ANSWER':
           var ANSWER = `
-          <p style="text-align:center;">Ответ</p>
+          <p class="block-title">Ответ</p>
           `
           editor.addNode('ANSWER', 1, 1, pos_x, pos_y, 'answer', {}, ANSWER);
           break;
 
         case 'SMS':
           var SMS = `
-          <p style="text-align:center;">SMS</p>
+          <p class="block-title">SMS</p>
           `;
           editor.addNode('SMS', 1, 1, pos_x, pos_y, 'sms', {}, SMS);
           break;
