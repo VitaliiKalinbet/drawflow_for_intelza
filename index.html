@@ -66,15 +66,19 @@
       </div>
     </div>
 
-    <div class="right-modal hide">
-      <span class="close-right-modal">CLOSE</span>
+    <div class="to-close-right-modal hide">
+      <div class="right-modal hide">
 
-      <button class="delete-block">Удалить блок</button>
+        <span class="btn-close-right-modal">CLOSE</span>
 
-      <div class="right-modal-content"></div>
+        <button class="delete-block">Удалить блок</button>
 
-      <button class="save-block">Сохранить изменения</button>
+        <div class="right-modal-content"></div>
+
+        <button class="save-block">Сохранить изменения</button>
+      </div>
     </div>
+
   </div>
 
   <script>
@@ -84,17 +88,39 @@
 
     const refs = {
       rightModal: document.querySelector('.right-modal'),
-      closeRightModal: document.querySelector('.close-right-modal'),
+      closeRightModal: document.querySelector('.btn-close-right-modal'),
       deleteBlock: document.querySelector('.delete-block'),
       rightModalContent: document.querySelector('.right-modal-content'),
       saveBlock: document.querySelector('.save-block'),
       btnSaveInJson: document.querySelector('#btn-download-json-file'),
+      btnSaveInJson: document.querySelector('#btn-download-json-file'),
+      toCloseRightModal: document.querySelector('.to-close-right-modal'),
     };
+    refs.toCloseRightModal.addEventListener('click', (e) => {
+      if (e.target === refs.toCloseRightModal) {
+        closeRightModal();
+      };
+    })
+    // so that the right modal does not close when you click on it:
+    refs.rightModal.addEventListener('click', function (e) {
+      e.stopPropagation();
+    })
 
     let blockId;
 
-    function closeRightModal() {
-      removeEditableAtributeToAllContent();
+    function closeRightModal(e) {
+      // console.log('e.target :>> ', e.target);
+      // console.log('!e.target.classList.contains("to-close-right-modal") :>> ', !e.target.classList.contains(
+      //   "to-close-right-modal"));
+      // if (e.target.classList.contains("to-close-right-modal")) {
+      //   return
+      // };
+      // if (e.target.classList.contains("btn-close-right-modal")) {
+      //   return
+      // };
+
+      // console.log('closeRightModal work');
+
       refs.rightModal.classList.add('hide');
       refs.rightModal.removeEventListener('click', closeRightModal);
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
@@ -102,6 +128,8 @@
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
       refs.saveBlock.removeEventListener('click', deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange);
       blockId = null;
+
+      refs.toCloseRightModal.classList.toggle('hide');
     }
 
     function deleteCurrentBlock() {
@@ -120,7 +148,8 @@
     }
 
     function removeEditableAtributeToAllContent() {
-      refs.rightModalContent.querySelector('p').setAttribute("contenteditable", false);
+      refs.rightModalContent.querySelector('p').removeAttribute('contenteditable');
+      console.log('refs.rightModalContent.querySelector(p) :>> ', refs.rightModalContent.querySelector('p'));
     }
 
     function deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange() {
@@ -139,6 +168,7 @@
       let exportdata = editor.export();
       console.log('exportdata :>> ', exportdata);
       console.log('id :>> ', blockId);
+      removeEditableAtributeToAllContent();
       exportdata.drawflow.Home.data[blockId].html = refs.rightModalContent.innerHTML;
       console.log('exportdata new :>> ', exportdata);
       exportdata = JSON.stringify(exportdata);
@@ -147,6 +177,7 @@
       console.log('exportdata parse :>> ', exportdata);
 
       editor.import(exportdata);
+      addEventListenerOnBlockTitles();
     };
 
     // code for export data in my-download.json - start
@@ -206,6 +237,16 @@
       addNodeContentToRightModal(blockId);
 
       addEditableAtributeToAllContent();
+
+      refs.toCloseRightModal.classList.toggle('hide');
+    }
+
+    function addEventListenerOnBlockTitles() {
+      const blockTitles = document.querySelectorAll('.block-title');
+      if (blockTitles.length === 0) return;
+      blockTitles.forEach(element => {
+        element.addEventListener('click', openRightModal);
+      });
     }
 
     // Events!
@@ -213,8 +254,9 @@
       // console.log("Node created " + id);
       const blockId = '#node-' + id;
       const blockTitle = document.querySelector(blockId).querySelector('.block-title');
-      blockTitle.setAttribute('data-id', id)
-      blockTitle.addEventListener('click', openRightModal)
+      blockTitle.setAttribute('data-id', id);
+
+      addEventListenerOnBlockTitles();
     })
     editor.on('nodeRemoved', function (id) {
       console.log("Node removed " + id);

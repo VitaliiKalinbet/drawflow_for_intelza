@@ -362,7 +362,7 @@ body {
   right: 0;
   bottom: 0;
   width: 30%;
-  height: calc(100vh - 67px);
+  height: calc(100vh - 50px);
   background-color: white;
   border: 1px solid black;
   box-sizing: border-box;
@@ -373,7 +373,14 @@ body {
   display: none;
 }
 
-.close-right-modal {
+.to-close-right-modal {
+  position: absolute;
+  z-index: 9;
+  width: 100vw;
+  height: 100vh;
+}
+
+.btn-close-right-modal {
   position: absolute;
   top: 20px;
   right: 20px;
