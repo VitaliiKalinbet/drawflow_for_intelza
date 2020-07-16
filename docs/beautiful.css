@@ -410,3 +410,11 @@ body {
   text-align: center;
   cursor: pointer;
 }
+
+/* styling phrase-content - start */
+.phrase-content,
+.answer-content,
+.sms-content {
+  display: flex;
+  flex-direction: column;
+}

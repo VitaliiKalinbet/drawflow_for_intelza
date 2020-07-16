@@ -84,6 +84,9 @@
     const editor = new Drawflow(id);
     editor.start();
 
+    let blockId;
+    let typeOfRightModal; // phrase, answer, sms
+
     const refs = {
       rightModal: document.querySelector('.right-modal'),
       closeRightModal: document.querySelector('.btn-close-right-modal'),
@@ -92,33 +95,16 @@
       btnSaveInJson: document.querySelector('#btn-download-json-file'),
       toCloseRightModal: document.querySelector('.to-close-right-modal'),
     };
+    // so that the right modal close when you click past it:
     refs.toCloseRightModal.addEventListener('click', (e) => {
       if (e.target === refs.toCloseRightModal) {
         closeRightModal();
       };
-    })
-    // so that the right modal does not close when you click on it:
-    refs.rightModal.addEventListener('click', function (e) {
-      e.stopPropagation();
-    })
-
-    let blockId;
+    });
 
     function closeRightModal(e) {
-      // console.log('e.target :>> ', e.target);
-      // console.log('!e.target.classList.contains("to-close-right-modal") :>> ', !e.target.classList.contains(
-      //   "to-close-right-modal"));
-      // if (e.target.classList.contains("to-close-right-modal")) {
-      //   return
-      // };
-      // if (e.target.classList.contains("btn-close-right-modal")) {
-      //   return
-      // };
-
-      // console.log('closeRightModal work');
-
       // so that changes are saved when you close the module:
-      deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange();
+      changeCurrentNode();
 
       refs.toCloseRightModal.classList.toggle('hide');
       refs.rightModal.classList.add('hide');
@@ -127,6 +113,7 @@
       refs.rightModalContent.innerHTML = '';
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
       blockId = null;
+      typeOfRightModal = null;
     }
 
     function deleteCurrentBlock() {
@@ -135,44 +122,140 @@
     }
 
     function addNodeContentToRightModal(id) {
-      const content = document.querySelector('#node-' + id).querySelector('.drawflow_content_node').innerHTML;
-      refs.rightModalContent.innerHTML = "";
-      refs.rightModalContent.insertAdjacentHTML('beforeend', content)
-    }
-
-    function addEditableAtributeToAllContent() {
-      refs.rightModalContent.querySelector('p').setAttribute("contenteditable", true);
-    }
-
-    function removeEditableAtributeToAllContent() {
-      refs.rightModalContent.querySelector('p').removeAttribute('contenteditable');
-      console.log('refs.rightModalContent.querySelector(p) :>> ', refs.rightModalContent.querySelector('p'));
-    }
-
-    function deleteCurrentNodeAndCreateNewNodeLikeCurrentWithChange() {
-      // const contentWrapperDiv = refs.rightModalContent.querySelector("#content-wrapper");
-      // const dataName = contentWrapperDiv.getAttribute('data-name');
-      // const dataNumIn = Number(contentWrapperDiv.getAttribute('data-num_in'));
-      // const dataNumOut = Number(contentWrapperDiv.getAttribute('data-num_out'));
-      // const dataElePosX = Number(contentWrapperDiv.getAttribute('data-ele_pos_x'));
-      // const dataElePosY = Number(contentWrapperDiv.getAttribute('data-ele_pos_y'));
-      // const dataClassoverride = contentWrapperDiv.getAttribute('data-classoverride');
-
-      // const blockHtml = refs.rightModalContent.innerHTML;
-      // deleteCurrentBlock();
-      // editor.addNode(dataName, dataNumIn, dataNumOut, dataElePosX, dataElePosY, dataClassoverride, {}, blockHtml);
-
+      blockId = id;
       let exportdata = editor.export();
-      console.log('exportdata :>> ', exportdata);
-      console.log('id :>> ', blockId);
-      removeEditableAtributeToAllContent();
-      exportdata.drawflow.Home.data[blockId].html = refs.rightModalContent.innerHTML;
-      console.log('exportdata new :>> ', exportdata);
-      exportdata = JSON.stringify(exportdata);
-      console.log('exportdata stringify :>> ', exportdata);
-      exportdata = JSON.parse(exportdata);
-      console.log('exportdata parse :>> ', exportdata);
+      console.log('exportdata in addNodeContentToRightModal when openRightModal');
+      console.dir(exportdata);
 
+      if (typeOfRightModal === "phrase") {
+        let title = exportdata.drawflow.Home.data[blockId].data.title;
+        let text = exportdata.drawflow.Home.data[blockId].data.text;
+        let is_final = exportdata.drawflow.Home.data[blockId].data.files.is_final;
+        refs.rightModalContent.innerHTML = `
+        <div class="phrase-content">
+          <h2>Фраза</h2>
+          <label for="title">Название:</label>
+          <input id="title" type="text" value="${title}">
+          <label for="text">Текст:</label>
+          <input id="text" type="text" value="${text}">
+          <label for="audiofile">Аудио:</label>
+          <input id="audiofile" type="file">
+          <label for="final-input"><input id="final-input" type="checkbox"> Финальное</label>
+        </div>
+        `;
+        if (is_final) {
+          refs.rightModalContent.querySelector('#final-input').setAttribute('checked', true);
+        }
+      } else if (typeOfRightModal === "answer") {
+        let title = exportdata.drawflow.Home.data[blockId].data.title;
+        let type = exportdata.drawflow.Home.data[blockId].data.type;
+        console.log('type answer in addNodeContentToRightModal', type);
+
+        if (type === "" || type === "Тишина" || type === "Непонятно" || type === "Открытый вопрос") {
+          refs.rightModalContent.innerHTML = `
+        <div class="answer-content">
+          <h2>Ответ</h2>
+          <label for="title">Тип:</label>
+          <select size="1">
+            <option disabled>Выберите тип</option>
+            <option value="Непонятно">Непонятно</option>
+            <option value="Тишина">Тишина</option>
+            <option value="Открытый вопрос">Открытый вопрос</option>
+            <option value="Интент">Интент</option>
+          </select>
+          <label for="title">Название:</label>
+          <input id="title" type="text" value="${title}">
+        </div>
+        `;
+          if (type !== "") {
+            refs.rightModalContent.querySelector('select').querySelector(`option[value="${type}"]`).setAttribute(
+              'selected', true);
+          };
+        }
+
+        if (type === "Интент") {
+          let intents = exportdata.drawflow.Home.data[blockId].data.intents;
+          refs.rightModalContent.innerHTML = `
+            <div class="answer-content">
+              <h2>Ответ</h2>
+              <label for="title">Тип:</label>
+              <select size="1">
+                <option disabled>Выберите тип</option>
+                <option value="Непонятно">Непонятно</option>
+                <option value="Тишина">Тишина</option>
+                <option value="Открытый вопрос">Открытый вопрос</option>
+                <option selected value="Интент">Интент</option>
+              </select>
+              <label for="title">Название:</label>
+              <input id="title" type="text" value="${title}">
+              <label for="textarea">Свои интенты:</label>
+              <textarea id="textarea" type="text" value="${title}">${intents}</textarea>
+              <p id="intents">
+                <span>Да</span>
+                <span>Нет</span>
+                <span>Вопрос</span>
+                <span>Повторите</span>
+              </p>
+            </div>
+            `;
+          refs.rightModalContent.querySelector('#intents').addEventListener('click', addIntentsToRightModalTextArea);
+        }
+
+      } else if (typeOfRightModal === "sms") {
+        let title = exportdata.drawflow.Home.data[blockId].data.title;
+        let text = exportdata.drawflow.Home.data[blockId].data.text;
+        refs.rightModalContent.innerHTML = `
+        <div class="sms-content">
+          <h2>SMS</h2>
+          <label for="title">Название:</label>
+          <input id="title" type="text" value="${title}">
+          <label for="text">Текст:</label>
+          <input id="text" type="text" value="${text}">
+        </div>
+        `;
+      }
+
+      // const content = document.querySelector('#node-' + id).querySelector('.drawflow_content_node').innerHTML;
+      // refs.rightModalContent.innerHTML = "";
+      // refs.rightModalContent.insertAdjacentHTML('beforeend', content)
+    }
+
+    function addIntentsToRightModalTextArea(e) {
+      if (e.target.tagName !== "SPAN") return;
+      if (refs.rightModalContent.querySelector('textarea').textContent.length === 0) {
+        refs.rightModalContent.querySelector('textarea').textContent = e.target.textContent;
+      } else {
+        refs.rightModalContent.querySelector('textarea').textContent += `, ${e.target.textContent}`;
+      }
+    }
+
+    function changeCurrentNode() {
+      let exportdata = editor.export();
+      console.log('exportdata before change:>> ', exportdata);
+      console.log('id :>> ', blockId);
+      //console.log('typeOfRightModal :>> ', typeOfRightModal);
+      //let typeOfRightModal; // phrase, answer, sms
+      if (typeOfRightModal === "phrase") {
+        const title = refs.rightModalContent.querySelector('input[id="title"]').value;
+        exportdata.drawflow.Home.data[blockId].html =
+          `<p class="block-title" data-typeofrightmodal="phrase" data-id=${blockId}>${title}</p>`;
+        exportdata.drawflow.Home.data[blockId].data.title = title;
+        const text = refs.rightModalContent.querySelector('input[id="text"]').value;
+        exportdata.drawflow.Home.data[blockId].data.text = text;
+        const is_final = refs.rightModalContent.querySelector('input[id="final-input"]').checked;
+        console.log('is_final');
+        console.dir(is_final);
+        exportdata.drawflow.Home.data[blockId].data.files.is_final = is_final;
+      } else if (typeOfRightModal === "answer") {
+        const title = refs.rightModalContent.querySelector('input[id="title"]').value;
+        exportdata.drawflow.Home.data[blockId].html =
+          `<p class="block-title" data-typeofrightmodal="answer" data-id=${blockId}>${title}</p>`;
+        exportdata.drawflow.Home.data[blockId].data.title = title;
+        let type = refs.rightModalContent.querySelector('select').value;
+        exportdata.drawflow.Home.data[blockId].data.type = type;
+      }
+
+      console.log('exportdata after change :>> ', exportdata);
       editor.import(exportdata);
       addEventListenerOnBlockTitles();
     };
@@ -196,7 +279,6 @@
     }());
 
     function onSaveDataInFileJson() {
-      console.log("work!!!!!!");
       const data = editor.export();
       const json = JSON.stringify(data);
       const fileName = "my-download.json";
@@ -224,6 +306,8 @@
 
     function openRightModal(e) {
       blockId = e.target.dataset.id;
+      typeOfRightModal = e.target.dataset.typeofrightmodal;
+      console.log('typeOfRightModal when openRightModal:>> ', typeOfRightModal);
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
       refs.rightModal.classList.remove('hide');
       refs.closeRightModal.addEventListener('click', closeRightModal);
@@ -231,7 +315,7 @@
 
       addNodeContentToRightModal(blockId);
 
-      addEditableAtributeToAllContent();
+      // addEditableAtributeToAllContent();
 
       refs.toCloseRightModal.classList.toggle('hide');
     }
@@ -344,23 +428,39 @@
       switch (name) {
         case 'PHRASE':
           var PHRASE = `
-          <p class="block-title">Фраза</p>
+          <p class="block-title" data-typeofrightmodal="phrase">Фраза</p>
         `;
-          editor.addNode('PHRASE', 1, 1, pos_x, pos_y, 'phrase', {}, PHRASE);
+          editor.addNode('PHRASE', 1, 1, pos_x, pos_y, 'phrase', {
+            title: "Фраза",
+            text: "",
+            files: {
+              name: "",
+              type: "",
+              link: "",
+              is_final: false,
+            }
+          }, PHRASE);
           break;
 
         case 'ANSWER':
           var ANSWER = `
-          <p class="block-title">Ответ</p>
+          <p class="block-title" data-typeofrightmodal="answer">Ответ</p>
           `
-          editor.addNode('ANSWER', 1, 1, pos_x, pos_y, 'answer', {}, ANSWER);
+          editor.addNode('ANSWER', 1, 1, pos_x, pos_y, 'answer', {
+            title: "Ответ",
+            type: "Интент",
+            intents: "",
+          }, ANSWER);
           break;
 
         case 'SMS':
           var SMS = `
-          <p class="block-title">SMS</p>
+          <p class="block-title" data-typeofrightmodal="sms">SMS</p>
           `;
-          editor.addNode('SMS', 1, 1, pos_x, pos_y, 'sms', {}, SMS);
+          editor.addNode('SMS', 1, 1, pos_x, pos_y, 'sms', {
+            title: "SMS",
+            text: "",
+          }, SMS);
           break;
 
         default:
