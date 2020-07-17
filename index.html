@@ -367,7 +367,7 @@
         console.log('e.target.closest(.drawflow-node)');
         console.dir(e.target.closest('.drawflow-node'));
         const id = e.target.closest('.drawflow-node').id;
-        blockId = id[id.length - 1];
+        blockId = id.slice(5);
         blockId = Number(blockId);
       }
       console.log('blockId in openRightModal :>> ', blockId);
