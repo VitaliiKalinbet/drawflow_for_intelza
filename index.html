@@ -125,14 +125,16 @@
       typeOfRightModal = null;
     }
 
-    function addNodeContentToRightModal(id) {
-      blockId = id;
+    function addNodeContentToRightModal() {
       let exportdata = editor.export();
       console.log('exportdata in addNodeContentToRightModal when openRightModal');
       console.dir(exportdata);
+      console.log('blockId :>> ', blockId);
 
       console.log('typeOfRightModal in addNodeContentToRightModal:>> ', typeOfRightModal);
+      console.log(typeOfRightModal === "phrase");
       if (typeOfRightModal === "phrase") {
+        console.log("WORK!!!!!");
         let title = exportdata.drawflow.Home.data[blockId].data.title;
         console.log('title :>> ', title);
         let text = exportdata.drawflow.Home.data[blockId].data.text;
@@ -361,6 +363,14 @@
     function openRightModal(e) {
       console.log('openRightModal work');
       blockId = e.target.dataset.id;
+      if (!blockId) {
+        console.log('e.target.closest(.drawflow-node)');
+        console.dir(e.target.closest('.drawflow-node'));
+        const id = e.target.closest('.drawflow-node').id;
+        blockId = id[id.length - 1];
+        blockId = Number(blockId);
+      }
+      console.log('blockId in openRightModal :>> ', blockId);
       typeOfRightModal = e.target.dataset.typeofrightmodal;
       // console.log('typeOfRightModal when openRightModal:>> ', typeOfRightModal);
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
