@@ -106,7 +106,7 @@
       // so that changes are saved when you close the module:
       changeCurrentNode();
 
-      refs.toCloseRightModal.classList.toggle('hide');
+      refs.toCloseRightModal.classList.add('hide');
       refs.rightModal.classList.add('hide');
       refs.rightModal.removeEventListener('click', closeRightModal);
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
@@ -121,10 +121,8 @@
       editor.removeNodeId('node-' + blockId);
       refs.rightModal.classList.add('hide');
       refs.toCloseRightModal.classList.add('hide');
-      console.log('work deleteCurrentBlock');
       blockId = null;
       typeOfRightModal = null;
-      // closeRightModal();
     }
 
     function addNodeContentToRightModal(id) {
@@ -133,10 +131,14 @@
       console.log('exportdata in addNodeContentToRightModal when openRightModal');
       console.dir(exportdata);
 
+      console.log('typeOfRightModal in addNodeContentToRightModal:>> ', typeOfRightModal);
       if (typeOfRightModal === "phrase") {
         let title = exportdata.drawflow.Home.data[blockId].data.title;
+        console.log('title :>> ', title);
         let text = exportdata.drawflow.Home.data[blockId].data.text;
+        console.log('text :>> ', text);
         let is_final = exportdata.drawflow.Home.data[blockId].data.files.is_final;
+        console.log('is_final :>> ', is_final);
         refs.rightModalContent.innerHTML = `
         <div class="phrase-content">
           <h2>Фраза</h2>
@@ -226,9 +228,9 @@
       let exportdata = editor.export();
       let title = exportdata.drawflow.Home.data[blockId].data.title;
       let type = exportdata.drawflow.Home.data[blockId].data.type;
-      console.log('exportdata.drawflow.Home.data[blockId].data in addSimpleAnswerLayoutInRightModal:>> ', exportdata
-        .drawflow.Home.data[blockId].data);
-      console.log('type in addSimpleAnswerLayoutInRightModal:>> ', type);
+      // console.log('exportdata.drawflow.Home.data[blockId].data in addSimpleAnswerLayoutInRightModal:>> ', exportdata
+      //   .drawflow.Home.data[blockId].data);
+      // console.log('type in addSimpleAnswerLayoutInRightModal:>> ', type);
       refs.rightModalContent.innerHTML = `
         <div class="answer-content">
           <h2>Ответ</h2>
@@ -286,8 +288,6 @@
         const text = refs.rightModalContent.querySelector('input[id="text"]').value;
         exportdata.drawflow.Home.data[blockId].data.text = text;
         const is_final = refs.rightModalContent.querySelector('input[id="final-input"]').checked;
-        console.log('is_final');
-        console.dir(is_final);
         exportdata.drawflow.Home.data[blockId].data.files.is_final = is_final;
       } else if (typeOfRightModal === "answer") {
         const title = refs.rightModalContent.querySelector('input[id="title"]').value;
@@ -359,19 +359,19 @@
     // code for import data from someFile.json - end
 
     function openRightModal(e) {
+      console.log('openRightModal work');
       blockId = e.target.dataset.id;
       typeOfRightModal = e.target.dataset.typeofrightmodal;
-      console.log('typeOfRightModal when openRightModal:>> ', typeOfRightModal);
+      // console.log('typeOfRightModal when openRightModal:>> ', typeOfRightModal);
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
       refs.rightModal.classList.remove('hide');
-      // refs.closeRightModal.addEventListener('click', closeRightModal);
+      refs.toCloseRightModal.classList.remove('hide');
+      refs.closeRightModal.addEventListener('click', closeRightModal);
       refs.deleteBlock.addEventListener('click', deleteCurrentBlock);
 
       addNodeContentToRightModal(blockId);
 
       // addEditableAtributeToAllContent();
-
-      refs.toCloseRightModal.classList.toggle('hide');
     }
 
     function addEventListenerOnBlockTitles() {
@@ -392,33 +392,33 @@
       addEventListenerOnBlockTitles();
     })
     editor.on('nodeRemoved', function (id) {
-      console.log("Node removed " + id);
+      //console.log("Node removed " + id);
     })
     editor.on('nodeSelected', function (id) {
 
     })
     editor.on('moduleCreated', function (name) {
-      console.log("Module Created " + name);
+      //console.log("Module Created " + name);
     })
     editor.on('moduleChanged', function (name) {
-      console.log("Module Changed " + name);
+      //console.log("Module Changed " + name);
     })
     editor.on('connectionCreated', function (connection) {
-      console.log('Connection created');
-      console.log(connection);
+      //console.log('Connection created');
+      //console.log(connection);
     })
     editor.on('connectionRemoved', function (connection) {
-      console.log('Connection removed');
-      console.log(connection);
+      //console.log('Connection removed');
+      //console.log(connection);
     })
     editor.on('mouseMove', function (position) {
       // console.log('Position mouse x:' + position.x + ' y:' + position.y);
     })
     editor.on('zoom', function (zoom) {
-      console.log('Zoom level ' + zoom);
+      //console.log('Zoom level ' + zoom);
     })
     editor.on('translate', function (position) {
-      console.log('Translate x:' + position.x + ' y:' + position.y);
+      //console.log('Translate x:' + position.x + ' y:' + position.y);
     })
 
     /* DRAG EVENT */
@@ -518,36 +518,6 @@
 
         default:
       }
-    }
-
-    var transform = '';
-
-    function showpopup(e) {
-      e.target.closest(".drawflow-node").style.zIndex = "9999";
-      e.target.children[0].style.display = "block";
-      //document.getElementById("modalfix").style.display = "block";
-
-      //e.target.children[0].style.transform = 'translate('+translate.x+'px, '+translate.y+'px)';
-      transform = editor.precanvas.style.transform;
-      editor.precanvas.style.transform = '';
-      editor.precanvas.style.left = editor.canvas_x + 'px';
-      editor.precanvas.style.top = editor.canvas_y + 'px';
-      console.log(transform);
-
-      //e.target.children[0].style.top  =  -editor.canvas_y - editor.container.offsetTop +'px';
-      //e.target.children[0].style.left  =  -editor.canvas_x  - editor.container.offsetLeft +'px';
-      editor.editor_mode = "fixed";
-
-    }
-
-    function closemodal(e) {
-      e.target.closest(".drawflow-node").style.zIndex = "2";
-      e.target.parentElement.parentElement.style.display = "none";
-      //document.getElementById("modalfix").style.display = "none";
-      editor.precanvas.style.transform = transform;
-      editor.precanvas.style.left = '0px';
-      editor.precanvas.style.top = '0px';
-      editor.editor_mode = "edit";
     }
   </script>
 </body>
