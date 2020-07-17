@@ -89,11 +89,11 @@
 
     const refs = {
       rightModal: document.querySelector('.right-modal'),
+      toCloseRightModal: document.querySelector('.to-close-right-modal'),
       closeRightModal: document.querySelector('.btn-close-right-modal'),
       deleteBlock: document.querySelector('.delete-block'),
       rightModalContent: document.querySelector('.right-modal-content'),
       btnSaveInJson: document.querySelector('#btn-download-json-file'),
-      toCloseRightModal: document.querySelector('.to-close-right-modal'),
     };
     // so that the right modal close when you click past it:
     refs.toCloseRightModal.addEventListener('click', (e) => {
@@ -117,8 +117,14 @@
     }
 
     function deleteCurrentBlock() {
+      refs.rightModalContent.innerHTML = '';
       editor.removeNodeId('node-' + blockId);
-      closeRightModal();
+      refs.rightModal.classList.add('hide');
+      refs.toCloseRightModal.classList.add('hide');
+      console.log('work deleteCurrentBlock');
+      blockId = null;
+      typeOfRightModal = null;
+      // closeRightModal();
     }
 
     function addNodeContentToRightModal(id) {
@@ -147,60 +153,14 @@
           refs.rightModalContent.querySelector('#final-input').setAttribute('checked', true);
         }
       } else if (typeOfRightModal === "answer") {
-        let title = exportdata.drawflow.Home.data[blockId].data.title;
         let type = exportdata.drawflow.Home.data[blockId].data.type;
-        console.log('type answer in addNodeContentToRightModal', type);
-
-        if (type === "" || type === "Тишина" || type === "Непонятно" || type === "Открытый вопрос") {
-          refs.rightModalContent.innerHTML = `
-        <div class="answer-content">
-          <h2>Ответ</h2>
-          <label for="title">Тип:</label>
-          <select size="1">
-            <option disabled>Выберите тип</option>
-            <option value="Непонятно">Непонятно</option>
-            <option value="Тишина">Тишина</option>
-            <option value="Открытый вопрос">Открытый вопрос</option>
-            <option value="Интент">Интент</option>
-          </select>
-          <label for="title">Название:</label>
-          <input id="title" type="text" value="${title}">
-        </div>
-        `;
-          if (type !== "") {
-            refs.rightModalContent.querySelector('select').querySelector(`option[value="${type}"]`).setAttribute(
-              'selected', true);
-          };
+        if (type === "" || type === "Тишина" || type === "Непонятно" || type === "Открытый вопрос" || type ===
+          "Выберите тип") {
+          addSimpleAnswerLayoutInRightModal();
         }
-
         if (type === "Интент") {
-          let intents = exportdata.drawflow.Home.data[blockId].data.intents;
-          refs.rightModalContent.innerHTML = `
-            <div class="answer-content">
-              <h2>Ответ</h2>
-              <label for="title">Тип:</label>
-              <select size="1">
-                <option disabled>Выберите тип</option>
-                <option value="Непонятно">Непонятно</option>
-                <option value="Тишина">Тишина</option>
-                <option value="Открытый вопрос">Открытый вопрос</option>
-                <option selected value="Интент">Интент</option>
-              </select>
-              <label for="title">Название:</label>
-              <input id="title" type="text" value="${title}">
-              <label for="textarea">Свои интенты:</label>
-              <textarea id="textarea" type="text" value="${title}">${intents}</textarea>
-              <p id="intents">
-                <span>Да</span>
-                <span>Нет</span>
-                <span>Вопрос</span>
-                <span>Повторите</span>
-              </p>
-            </div>
-            `;
-          refs.rightModalContent.querySelector('#intents').addEventListener('click', addIntentsToRightModalTextArea);
+          addIntentAnswerLayoutInRightModal();
         }
-
       } else if (typeOfRightModal === "sms") {
         let title = exportdata.drawflow.Home.data[blockId].data.title;
         let text = exportdata.drawflow.Home.data[blockId].data.text;
@@ -229,10 +189,93 @@
       }
     }
 
+    function addIntentAnswerLayoutInRightModal() {
+      let exportdata = editor.export();
+      let title = exportdata.drawflow.Home.data[blockId].data.title;
+      let type = exportdata.drawflow.Home.data[blockId].data.type;
+      let intents = exportdata.drawflow.Home.data[blockId].data.intents;
+      refs.rightModalContent.innerHTML = `
+            <div class="answer-content">
+              <h2>Ответ</h2>
+              <label for="title">Тип:</label>
+              <select size="1">
+                <option disabled value="Выберите тип">Выберите тип</option>
+                <option value="Непонятно">Непонятно</option>
+                <option value="Тишина">Тишина</option>
+                <option value="Открытый вопрос">Открытый вопрос</option>
+                <option selected value="Интент">Интент</option>
+              </select>
+              <label for="title">Название:</label>
+              <input id="title" type="text" value="${title}">
+              <label for="textarea">Свои интенты:</label>
+              <textarea id="textarea" type="text">${intents}</textarea>
+              <p id="intents">
+                <span>Да</span>
+                <span>Нет</span>
+                <span>Вопрос</span>
+                <span>Повторите</span>
+              </p>
+            </div>
+            `;
+      refs.rightModalContent.querySelector('#intents').addEventListener('click', addIntentsToRightModalTextArea);
+      refs.rightModalContent.querySelector('select').addEventListener('change',
+        monitoringIntentTypeOrNoAndAddChangeDOM);
+    }
+
+    function addSimpleAnswerLayoutInRightModal() {
+      let exportdata = editor.export();
+      let title = exportdata.drawflow.Home.data[blockId].data.title;
+      let type = exportdata.drawflow.Home.data[blockId].data.type;
+      console.log('exportdata.drawflow.Home.data[blockId].data in addSimpleAnswerLayoutInRightModal:>> ', exportdata
+        .drawflow.Home.data[blockId].data);
+      console.log('type in addSimpleAnswerLayoutInRightModal:>> ', type);
+      refs.rightModalContent.innerHTML = `
+        <div class="answer-content">
+          <h2>Ответ</h2>
+          <label for="title">Тип:</label>
+          <select size="1">
+            <option disabled value="Выберите тип">Выберите тип</option>
+            <option value="Непонятно">Непонятно</option>
+            <option value="Тишина">Тишина</option>
+            <option value="Открытый вопрос">Открытый вопрос</option>
+            <option value="Интент">Интент</option>
+          </select>
+          <label for="title">Название:</label>
+          <input id="title" type="text" value="${title}">
+        </div>
+        `;
+      if (type === "") {
+        refs.rightModalContent.querySelector('select').querySelector(`option[disabled]`).setAttribute(
+          'selected', true);
+      } else {
+        refs.rightModalContent.querySelector('select').querySelector(`option[value="${type}"]`).setAttribute(
+          'selected', true);
+      }
+      refs.rightModalContent.querySelector('select').addEventListener('change',
+        monitoringIntentTypeOrNoAndAddChangeDOM);
+    }
+
+    function monitoringIntentTypeOrNoAndAddChangeDOM(e) {
+      if (typeOfRightModal !== "answer") return;
+      let exportdata = editor.export();
+      exportdata.drawflow.Home.data[blockId].data.type = e.target.value;
+      editor.import(exportdata);
+      Array.from(e.target.children).forEach(el => {
+        if (el.hasAttribute('selected')) {
+          el.removeAttribute('selected');
+        }
+      });
+      if (e.target.value === "Интент") {
+        addIntentAnswerLayoutInRightModal();
+      } else {
+        addSimpleAnswerLayoutInRightModal();
+      }
+    }
+
     function changeCurrentNode() {
       let exportdata = editor.export();
-      console.log('exportdata before change:>> ', exportdata);
-      console.log('id :>> ', blockId);
+      // console.log('exportdata before change:>> ', exportdata);
+      // console.log('id :>> ', blockId);
       //console.log('typeOfRightModal :>> ', typeOfRightModal);
       //let typeOfRightModal; // phrase, answer, sms
       if (typeOfRightModal === "phrase") {
@@ -253,9 +296,20 @@
         exportdata.drawflow.Home.data[blockId].data.title = title;
         let type = refs.rightModalContent.querySelector('select').value;
         exportdata.drawflow.Home.data[blockId].data.type = type;
+        if (refs.rightModalContent.querySelector('textarea')) {
+          let intents = refs.rightModalContent.querySelector('textarea').value;
+          exportdata.drawflow.Home.data[blockId].data.intents = intents;
+        }
+      } else if (typeOfRightModal === "sms") {
+        const title = refs.rightModalContent.querySelector('input[id="title"]').value;
+        exportdata.drawflow.Home.data[blockId].html =
+          `<p class="block-title" data-typeofrightmodal="sms" data-id=${blockId}>${title}</p>`;
+        exportdata.drawflow.Home.data[blockId].data.title = title;
+        const text = refs.rightModalContent.querySelector('input[id="text"]').value;
+        exportdata.drawflow.Home.data[blockId].data.text = text;
       }
 
-      console.log('exportdata after change :>> ', exportdata);
+      // console.log('exportdata after change :>> ', exportdata);
       editor.import(exportdata);
       addEventListenerOnBlockTitles();
     };
@@ -310,7 +364,7 @@
       console.log('typeOfRightModal when openRightModal:>> ', typeOfRightModal);
       refs.deleteBlock.removeEventListener('click', deleteCurrentBlock);
       refs.rightModal.classList.remove('hide');
-      refs.closeRightModal.addEventListener('click', closeRightModal);
+      // refs.closeRightModal.addEventListener('click', closeRightModal);
       refs.deleteBlock.addEventListener('click', deleteCurrentBlock);
 
       addNodeContentToRightModal(blockId);
@@ -339,7 +393,6 @@
     })
     editor.on('nodeRemoved', function (id) {
       console.log("Node removed " + id);
-      closeRightModal();
     })
     editor.on('nodeSelected', function (id) {
 
@@ -448,7 +501,7 @@
           `
           editor.addNode('ANSWER', 1, 1, pos_x, pos_y, 'answer', {
             title: "Ответ",
-            type: "Интент",
+            type: "",
             intents: "",
           }, ANSWER);
           break;
