@@ -171,26 +171,11 @@
 
       function addNodeContentToRightModal() {
         let exportdata = editor.export();
-        // console.log(
-        //   "exportdata in addNodeContentToRightModal when openRightModal"
-        // );
-        // console.dir(exportdata);
-        // console.log("blockId :>> ", blockId);
-
-        // console.log(
-        //   "typeOfRightModal in addNodeContentToRightModal:>> ",
-        //   typeOfRightModal
-        // );
-        // console.log(typeOfRightModal === "phrase");
         if (typeOfRightModal === "phrase") {
-          // console.log("WORK!!!!!");
           let title = exportdata.drawflow.Home.data[blockId].data.title;
-          // console.log("title :>> ", title);
           let text = exportdata.drawflow.Home.data[blockId].data.text;
-          // console.log("text :>> ", text);
           let is_final =
             exportdata.drawflow.Home.data[blockId].data.files.is_final;
-          // console.log("is_final :>> ", is_final);
           refs.rightModalContent.innerHTML = `
         <div class="phrase-content">
           <h2 class="title-right-modal">Фраза</h2>
@@ -245,10 +230,6 @@
         </div>
         `;
         }
-
-        // const content = document.querySelector('#node-' + id).querySelector('.drawflow_content_node').innerHTML;
-        // refs.rightModalContent.innerHTML = "";
-        // refs.rightModalContent.insertAdjacentHTML('beforeend', content)
       }
 
       function workInputTypeFile() {
@@ -325,9 +306,6 @@
         let exportdata = editor.export();
         let title = exportdata.drawflow.Home.data[blockId].data.title;
         let type = exportdata.drawflow.Home.data[blockId].data.type;
-        // console.log('exportdata.drawflow.Home.data[blockId].data in addSimpleAnswerLayoutInRightModal:>> ', exportdata
-        //   .drawflow.Home.data[blockId].data);
-        // console.log('type in addSimpleAnswerLayoutInRightModal:>> ', type);
         refs.rightModalContent.innerHTML = `
         <div class="answer-content">
           <h2 class="title-right-modal">Ответ</h2>
@@ -378,10 +356,6 @@
 
       function changeCurrentNode() {
         let exportdata = editor.export();
-        // console.log('exportdata before change:>> ', exportdata);
-        // console.log('id :>> ', blockId);
-        //console.log('typeOfRightModal :>> ', typeOfRightModal);
-        //let typeOfRightModal; // phrase, answer, sms
         if (typeOfRightModal === "phrase") {
           const title = refs.rightModalContent.querySelector(
             'input[id="title"]'
@@ -424,8 +398,6 @@
             .value;
           exportdata.drawflow.Home.data[blockId].data.text = text;
         }
-
-        // console.log('exportdata after change :>> ', exportdata);
         editor.import(exportdata);
         addEventListenerOnBlockTitles();
       }
@@ -477,27 +449,19 @@
       // code for import data from someFile.json - end
 
       function openRightModal(e) {
-        console.log("openRightModal work");
         blockId = e.target.dataset.id;
         if (!blockId) {
-          console.log("e.target.closest(.drawflow-node)");
-          console.dir(e.target.closest(".drawflow-node"));
           const id = e.target.closest(".drawflow-node").id;
           blockId = id.slice(5);
           blockId = Number(blockId);
         }
-        console.log("blockId in openRightModal :>> ", blockId);
         typeOfRightModal = e.target.dataset.typeofrightmodal;
-        // console.log('typeOfRightModal when openRightModal:>> ', typeOfRightModal);
         refs.deleteBlock.removeEventListener("click", deleteCurrentBlock);
         refs.rightModal.classList.remove("hide");
         refs.toCloseRightModal.classList.remove("hide");
         refs.closeRightModal.addEventListener("click", closeRightModal);
         refs.deleteBlock.addEventListener("click", deleteCurrentBlock);
-
         addNodeContentToRightModal(blockId);
-
-        // addEditableAtributeToAllContent();
       }
 
       function addEventListenerOnBlockTitles() {
@@ -530,8 +494,8 @@
         //console.log("Module Changed " + name);
       });
       editor.on("connectionCreated", function (connection) {
-        //console.log('Connection created');
-        //console.log(connection);
+        // console.log("Connection created");
+        // console.dir(connection);
       });
       editor.on("connectionRemoved", function (connection) {
         //console.log('Connection removed');
