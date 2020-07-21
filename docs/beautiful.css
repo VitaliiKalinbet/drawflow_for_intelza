@@ -99,6 +99,54 @@ body {
 
   display: flex;
   align-items: center;
+  position: relative;
+}
+
+.drag-drawflow:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  left: -20px;
+  top: -15px;
+  z-index: 10;
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+  padding: 5px;
+  color: black;
+}
+
+.zoom-wrapper {
+  position: relative;
+}
+
+.zoom-wrapper:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 25px;
+  top: -5px;
+  z-index: 10;
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+  padding: 5px;
+  color: black;
+  background: white;
+}
+
+.btn-wrapper {
+  position: relative;
+}
+
+.btn-wrapper:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  left: -85px;
+  top: -8px;
+  z-index: 10;
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+  padding: 5px;
+  color: black;
+  background: white;
+  width: 75px;
 }
 
 .swal-wide {
