@@ -180,6 +180,8 @@
         refs.deleteBlock.removeEventListener("click", deleteCurrentBlock);
         blockId = null;
         typeOfRightModal = null;
+
+        historyArray.push(editor.export());
       }
 
       function deleteCurrentBlock() {
@@ -496,12 +498,17 @@
 
       function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor() {
         if (event.ctrlKey && event.key === "z") {
+          console.log("historyArray.length :>> ", historyArray.length);
           if (historyArray.length >= 2) {
             if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
               editor.import(clearEditor);
               return;
             }
             editor.import(
+              historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
+            );
+            console.log(
+              "historyArray[historyArray.length - (2 + countPressCtrlPlusZ)] import in editor:>> ",
               historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
             );
             countPressCtrlPlusZ = countPressCtrlPlusZ + 1;
