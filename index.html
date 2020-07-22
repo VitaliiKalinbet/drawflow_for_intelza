@@ -94,7 +94,10 @@
             </button>
           </div>
 
-          <div class="btn-wrapper" data-title="Импорт файла в формате .json">
+          <div
+            class="btn-wrapper"
+            data-title="Загрузить сохраненный сценарий. Формат json."
+          >
             <button class="input__wrapper">
               <input
                 type="file"
@@ -113,7 +116,7 @@
             </button>
           </div>
 
-          <div class="btn-wrapper" data-title="Скачать схему в формате .json">
+          <div class="btn-wrapper" data-title="Скачать сценарий">
             <button id="btn-download-json-file">
               <img class="export-img" src="./images/import.png" />
             </button>
@@ -497,24 +500,27 @@
       }
 
       function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor(e) {
-        console.log(
-          "listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor work !!!"
-        );
-
         const evtobj = window.event ? event : e;
         if (evtobj.keyCode == 90 && evtobj.ctrlKey) {
           console.log(
             "ctrl + z pres; historyArray.length :>> ",
             historyArray.length
           );
+          console.log(
+            "historyArray.length - (2 + countPressCtrlPlusZ) :>> ",
+            historyArray.length - (2 + countPressCtrlPlusZ)
+          );
+          console.table(historyArray);
+
           if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
             editor.import(clearEditor);
+            historyArray = [];
             return;
           }
-          if (historyArray.length - (2 + countPressCtrlPlusZ) === 1) {
-            editor.import(clearEditor);
-            return;
-          }
+          // if (historyArray.length - (2 + countPressCtrlPlusZ) === 1) {
+          //   editor.import(clearEditor);
+          //   return;
+          // }
           if (historyArray.length >= 2) {
             editor.import(
               historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
@@ -525,6 +531,7 @@
               historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
             );
             countPressCtrlPlusZ = countPressCtrlPlusZ + 1;
+            console.log("=====================================");
           }
         }
       }
