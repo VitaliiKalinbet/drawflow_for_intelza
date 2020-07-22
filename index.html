@@ -151,6 +151,7 @@
       let typeOfRightModal; // phrase, answer, sms
       let historyArray = [];
       let countPressCtrlPlusZ = 0;
+      const clearEditor = editor.export();
 
       const refs = {
         rightModal: document.querySelector(".right-modal"),
@@ -496,7 +497,10 @@
       function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor() {
         if (event.ctrlKey && event.key === "z") {
           if (historyArray.length >= 2) {
-            if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) return;
+            if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
+              editor.import(clearEditor);
+              return;
+            }
             editor.import(
               historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
             );
@@ -533,7 +537,7 @@
       });
       editor.on("connectionCreated", function (connection) {
         // console.log("Connection created");
-        console.dir(connection);
+        // console.dir(connection);
 
         const currentData = editor.export();
         historyArray.push(currentData);
@@ -541,7 +545,7 @@
       });
       editor.on("connectionRemoved", function (connection) {
         // console.log("Connection removed");
-        console.log(connection);
+        // console.log(connection);
 
         const currentData = editor.export();
         historyArray.push(currentData);
