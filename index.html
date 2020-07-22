@@ -280,17 +280,21 @@
 
       function addIntentsToRightModalTextArea(e) {
         if (e.target.tagName !== "SPAN") return;
-        if (
-          refs.rightModalContent.querySelector("textarea").textContent
-            .length === 0
-        ) {
-          refs.rightModalContent.querySelector("textarea").textContent =
-            e.target.textContent;
-        } else {
-          refs.rightModalContent.querySelector(
-            "textarea"
-          ).textContent += `, ${e.target.textContent}`;
-        }
+        console.log("work addIntentsToRightModalTextArea");
+        console.log(e.target.textContent);
+
+        refs.rightModalContent.querySelector(
+          ".rigth-modal-textarea"
+        ).innerHTML = e.target.textContent;
+
+        console.log(
+          'refs.rightModalContent.querySelector(".rigth-modal-textarea").innerHTML :>> ',
+          refs.rightModalContent.querySelector(".rigth-modal-textarea")
+            .innerHTML
+        );
+        console.dir(
+          refs.rightModalContent.querySelector(".rigth-modal-textarea")
+        );
       }
 
       function addIntentAnswerLayoutInRightModal() {
@@ -313,12 +317,16 @@
               <input class="input-text" id="title" type="text" value="${title}">
               <label class="right-modal-label" for="textarea">Свои интенты:</label>
               <textarea rows="3" class="rigth-modal-textarea" id="textarea" type="text">${intents}</textarea>
-              <p class="right-modal-intents" id="intents">
-                <span>Да</span>
-                <span>Нет</span>
-                <span>Вопрос</span>
-                <span>Повторите</span>
-              </p>
+              <div class="right-modal-intents" id="intents">
+                <h4 class="right-modal-intents-title">Да</h4>
+                <span>да</span> <span>возможно</span>  <span>ок</span> <span>окей</span> <span>хорошо</span> <span>пускай</span> <span>конечно</span> <span>скорей да</span> <span>так</span> <span>знаю</span> <span>естественно</span> <span>звичайно</span> <span>звісно</span> <span>авжеж</span>
+                <h4 class="right-modal-intents-title">Нет</h4>
+                <span>не</span> <span>нет</span> <span>нету</span> <span>не нужно</span> <span>не стоит</span> <span>не буду</span> <span>не хочу</span> <span>скорей нет</span> <span>не знаю</span> <span>нема</span> <span>звичайно ні</span> <span>звісно ні</span> <span>да нет наверное</span>
+                <h4 class="right-modal-intents-title">Вопрос</h4>
+                <span>кто</span> <span>что</span> <span>когда</span> <span>зачем</span> <span>почему</span> <span>где</span> <span>как</span> <span>какой</span> <span>какая</span> <span>куда</span> <span>откуда</span> <span>насколько</span> <span>подробней</span> <span>як</span>
+                <h4 class="right-modal-intents-title">Повторить</h4>
+                <span>повторить</span> <span>повторите</span> <span>еще раз</span> <span>не слышно</span> <span>не расслышала</span> <span>что что</span> <span>що</span> <span>не чутно</span> <span>голосніше</span> <span>нерозчула</span>
+              </div>
             </div>
             `;
         refs.rightModalContent
