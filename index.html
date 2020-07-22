@@ -497,13 +497,23 @@
       }
 
       function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor() {
+        console.log(
+          "listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor work !!!"
+        );
         if (event.ctrlKey && event.key === "z") {
-          console.log("historyArray.length :>> ", historyArray.length);
+          console.log(
+            "ctrl + z pres; historyArray.length :>> ",
+            historyArray.length
+          );
+          if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
+            editor.import(clearEditor);
+            return;
+          }
+          if (historyArray.length - (2 + countPressCtrlPlusZ) === 1) {
+            editor.import(clearEditor);
+            return;
+          }
           if (historyArray.length >= 2) {
-            if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
-              editor.import(clearEditor);
-              return;
-            }
             editor.import(
               historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
             );
@@ -538,6 +548,8 @@
       editor.on("nodeRemoved", function (id) {
         // console.log("Node removed " + id);
 
+        addEventListenerOnBlockTitles();
+
         const currentData = editor.export();
         historyArray.push(currentData);
         countPressCtrlPlusZ = 0;
@@ -546,6 +558,8 @@
         // console.log("Connection created");
         // console.dir(connection);
 
+        addEventListenerOnBlockTitles();
+
         const currentData = editor.export();
         historyArray.push(currentData);
         countPressCtrlPlusZ = 0;
@@ -553,6 +567,8 @@
       editor.on("connectionRemoved", function (connection) {
         // console.log("Connection removed");
         // console.log(connection);
+
+        addEventListenerOnBlockTitles();
 
         const currentData = editor.export();
         historyArray.push(currentData);
