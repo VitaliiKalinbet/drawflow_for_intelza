@@ -496,13 +496,13 @@
         });
       }
 
-      function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor(
-        event
-      ) {
+      function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor(e) {
         console.log(
           "listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor work !!!"
         );
-        if (event.ctrlKey && event.key === "z") {
+
+        const evtobj = window.event ? event : e;
+        if (evtobj.keyCode == 90 && evtobj.ctrlKey) {
           console.log(
             "ctrl + z pres; historyArray.length :>> ",
             historyArray.length
