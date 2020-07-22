@@ -35,7 +35,7 @@
           <div class="zoom-wrapper" data-title="Уменьшить">
             <i class="fas fa-search-minus" onclick="editor.zoom_out()"></i>
           </div>
-          <div class="zoom-wrapper" data-title="Вернуть стандартный размер">
+          <div class="zoom-wrapper" data-title="Стандартный размер">
             <i class="fas fa-search" onclick="editor.zoom_reset()"></i>
           </div>
           <div class="zoom-wrapper" data-title="Увеличить">
@@ -85,7 +85,10 @@
         </div>
 
         <div class="group-wrapper">
-          <div class="btn-wrapper" data-title="Очистить схему">
+          <div
+            class="btn-wrapper"
+            data-title="Очистить поле для создания сценариев"
+          >
             <button onclick="editor.clearModuleSelected()">
               <img class="clear-img" src="./images/clear.png" />
             </button>
@@ -146,6 +149,8 @@
 
       let blockId;
       let typeOfRightModal; // phrase, answer, sms
+      let historyArray = [];
+      let countPressCtrlPlusZ = 0;
 
       const refs = {
         rightModal: document.querySelector(".right-modal"),
@@ -488,6 +493,22 @@
         });
       }
 
+      function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor() {
+        if (event.ctrlKey && event.key === "z") {
+          if (historyArray.length >= 2) {
+            if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) return;
+            editor.import(
+              historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
+            );
+            countPressCtrlPlusZ = countPressCtrlPlusZ + 1;
+          }
+        }
+      }
+      document.addEventListener(
+        "keydown",
+        listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
+      );
+
       // Events!
       editor.on("nodeCreated", function (id) {
         // console.log("Node created " + id);
@@ -498,24 +519,43 @@
         blockTitle.setAttribute("data-id", id);
 
         addEventListenerOnBlockTitles();
+
+        const currentData = editor.export();
+        historyArray.push(currentData);
+        countPressCtrlPlusZ = 0;
       });
       editor.on("nodeRemoved", function (id) {
-        //console.log("Node removed " + id);
-      });
-      editor.on("nodeSelected", function (id) {});
-      editor.on("moduleCreated", function (name) {
-        //console.log("Module Created " + name);
-      });
-      editor.on("moduleChanged", function (name) {
-        //console.log("Module Changed " + name);
+        // console.log("Node removed " + id);
+
+        const currentData = editor.export();
+        historyArray.push(currentData);
+        countPressCtrlPlusZ = 0;
       });
       editor.on("connectionCreated", function (connection) {
         // console.log("Connection created");
-        // console.dir(connection);
+        console.dir(connection);
+
+        const currentData = editor.export();
+        historyArray.push(currentData);
+        countPressCtrlPlusZ = 0;
       });
       editor.on("connectionRemoved", function (connection) {
-        //console.log('Connection removed');
-        //console.log(connection);
+        // console.log("Connection removed");
+        console.log(connection);
+
+        const currentData = editor.export();
+        historyArray.push(currentData);
+        countPressCtrlPlusZ = 0;
+      });
+
+      editor.on("nodeSelected", function (id) {
+        // console.log("nodeSelected ", id);
+      });
+      editor.on("moduleCreated", function (name) {
+        // console.log("Module Created " + name);
+      });
+      editor.on("moduleChanged", function (name) {
+        // console.log("Module Changed " + name);
       });
       editor.on("mouseMove", function (position) {
         // console.log('Position mouse x:' + position.x + ' y:' + position.y);
