@@ -55,10 +55,6 @@ body {
   user-select: none;
 }
 
-.group-wrapper button:hover {
-  transform: scale(1.1);
-}
-
 .clear-img {
   width: 26px;
   height: 26px;
@@ -183,7 +179,6 @@ body {
   color: black;
   cursor: pointer;
   padding-left: 10px;
-  transform: scale(1.1);
   width: 26px;
   height: 26px;
 }
@@ -403,10 +398,6 @@ body {
   width: 30px;
   height: 30px;
   padding-right: 15px;
-}
-
-.drag-drawflow:hover .block-image {
-  transform: scale(1.1);
 }
 
 .right-modal {
