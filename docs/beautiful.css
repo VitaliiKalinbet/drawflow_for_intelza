@@ -550,21 +550,13 @@ body {
 }
 
 .right-modal-intents {
-  height: calc(100vh - 502px);
-  overflow: hidden;
-  overflow-y: auto;
+  /* height: calc(100vh - 502px); */
+  /* overflow: hidden;
+  overflow-y: auto; */
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
-}
-
-.right-modal-intents-title {
-  color: #2a2a2a;
-  margin: 0;
-  padding: 0;
-  font-weight: 700;
-  font-style: italic;
 }
 
 .right-modal-intents span {
