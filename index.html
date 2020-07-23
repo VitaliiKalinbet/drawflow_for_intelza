@@ -502,36 +502,25 @@
       function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor(e) {
         const evtobj = window.event ? event : e;
         if (evtobj.keyCode == 90 && evtobj.ctrlKey) {
-          console.log(
-            "ctrl + z pres; historyArray.length :>> ",
-            historyArray.length
-          );
-          console.log(
-            "historyArray.length - (2 + countPressCtrlPlusZ) :>> ",
-            historyArray.length - (2 + countPressCtrlPlusZ)
-          );
-          console.table(historyArray);
+          refs.rightModalContent.innerHTML = "";
+          if (!refs.toCloseRightModal.classList.contains("hide")) {
+            refs.toCloseRightModal.classList.add("hide");
+          }
+          if (!refs.rightModal.classList.contains("hide")) {
+            refs.rightModal.classList.add("hide");
+          }
 
           if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
             editor.import(clearEditor);
             historyArray = [];
             return;
           }
-          // if (historyArray.length - (2 + countPressCtrlPlusZ) === 1) {
-          //   editor.import(clearEditor);
-          //   return;
-          // }
           if (historyArray.length >= 2) {
             editor.import(
               historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
             );
             addEventListenerOnBlockTitles();
-            console.log(
-              "historyArray[historyArray.length - (2 + countPressCtrlPlusZ)] import in editor:>> ",
-              historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
-            );
             countPressCtrlPlusZ = countPressCtrlPlusZ + 1;
-            console.log("=====================================");
           }
         }
       }
