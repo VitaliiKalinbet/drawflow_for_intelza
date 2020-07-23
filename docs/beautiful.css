@@ -553,6 +553,7 @@ body {
   /* height: calc(100vh - 502px); */
   /* overflow: hidden;
   overflow-y: auto; */
+  margin-top: 10px;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
