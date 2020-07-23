@@ -280,21 +280,8 @@
 
       function addIntentsToRightModalTextArea(e) {
         if (e.target.tagName !== "SPAN") return;
-        console.log("work addIntentsToRightModalTextArea");
-        console.log(e.target.textContent);
-
-        refs.rightModalContent.querySelector(
-          ".rigth-modal-textarea"
-        ).innerHTML = e.target.textContent;
-
-        console.log(
-          'refs.rightModalContent.querySelector(".rigth-modal-textarea").innerHTML :>> ',
-          refs.rightModalContent.querySelector(".rigth-modal-textarea")
-            .innerHTML
-        );
-        console.dir(
-          refs.rightModalContent.querySelector(".rigth-modal-textarea")
-        );
+        refs.rightModalContent.querySelector(".rigth-modal-textarea").value =
+          e.target.textContent;
       }
 
       function addIntentAnswerLayoutInRightModal() {
