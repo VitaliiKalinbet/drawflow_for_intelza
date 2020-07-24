@@ -183,9 +183,9 @@ body {
   height: 26px;
 }
 
-.bar-zoom svg:nth-child(1) {
+/* .bar-zoom svg:nth-child(1) {
   padding-left: 0px;
-}
+} */
 
 #drawflow {
   position: relative;
@@ -641,10 +641,37 @@ body {
 }
 
 /* styling input type file - end */
+.info-and-actions-wrapper {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 2px solid #cccccc;
+}
 
 .info-image {
-  width: 30px;
-  height: 30px;
-  padding-left: 25px;
-  border-left: 2px solid #cccccc;
+  width: 24px;
+  height: 24px;
+  margin-left: 15px;
+}
+
+.arrows-image-back {
+  width: 24px;
+  height: 24px;
+  margin-left: 18px;
+}
+
+.arrows-image-forward {
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+}
+
+.info-and-actions-button {
+  border: none;
+  outline: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

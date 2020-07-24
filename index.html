@@ -41,11 +41,23 @@
           <div class="zoom-wrapper" data-title="Увеличить">
             <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
           </div>
-          <!-- <div class="info-image-wrapper">
-            <svg class="info-image">
-              <use xlink:href="./images/sprite3.svg#info"></use>
-            </svg>
-          </div> -->
+          <div class="info-and-actions-wrapper">
+            <button class="info-and-actions-button" id="info-button">
+              <svg class="info-image">
+                <use xlink:href="./images/sprite3.svg#info"></use>
+              </svg>
+            </button>
+            <button class="info-and-actions-button" id="back-button">
+              <svg class="arrows-image-back">
+                <use xlink:href="./images/sprite3.svg#back"></use>
+              </svg>
+            </button>
+            <button class="info-and-actions-button hide" id="forward-button">
+              <svg class="arrows-image-forward">
+                <use xlink:href="./images/sprite3.svg#forward"></use>
+              </svg>
+            </button>
+          </div>
         </div>
 
         <div class="group-wrapper">
@@ -524,7 +536,27 @@
 
       function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor(e) {
         const evtobj = window.event ? event : e;
-        if (evtobj.keyCode == 90 && evtobj.ctrlKey) {
+
+        if (
+          (evtobj.keyCode == 90 && evtobj.ctrlKey) ||
+          evtobj.target.closest('button[id="back-button"]')
+        ) {
+          // if press ctrl + z
+          const forwardBtn = document.querySelector(
+            'button[id="forward-button"]'
+          );
+          if (forwardBtn.classList.contains("hide")) {
+            forwardBtn.classList.remove("hide");
+            setTimeout(() => {
+              document
+                .querySelector('button[id="forward-button"]')
+                .addEventListener(
+                  "click",
+                  listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
+                );
+            }, 0);
+          }
+
           refs.rightModalContent.innerHTML = "";
           if (!refs.toCloseRightModal.classList.contains("hide")) {
             refs.toCloseRightModal.classList.add("hide");
@@ -535,7 +567,7 @@
 
           if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
             editor.import(clearEditor);
-            historyArray = [];
+            // historyArray = [];
             localStorage.setItem("dataForDrawlowEditor", "");
             return;
           }
@@ -554,12 +586,52 @@
               );
             }, 0);
           }
+        } else if (
+          (evtobj.keyCode == 89 && evtobj.ctrlKey) ||
+          evtobj.target.closest('button[id="forward-button"]')
+        ) {
+          // if press ctrl + y
+          if (countPressCtrlPlusZ > 0) {
+            if (historyArray.length >= 2) {
+              console.log('"press ctrl + y"');
+              editor.import(
+                historyArray[
+                  historyArray.length + 2 - (2 + countPressCtrlPlusZ)
+                ]
+              );
+              addEventListenerOnBlockTitles();
+              countPressCtrlPlusZ = countPressCtrlPlusZ - 1;
+
+              if (countPressCtrlPlusZ === 0) {
+                const forwardBtn = document.querySelector(
+                  'button[id="forward-button"]'
+                );
+                forwardBtn.classList.add("hide");
+              }
+
+              setTimeout(() => {
+                const currentData = editor.export();
+                localStorage.setItem(
+                  "dataForDrawlowEditor",
+                  JSON.stringify(currentData)
+                );
+              }, 0);
+            }
+          }
         }
       }
-      document.addEventListener(
-        "keydown",
-        listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
-      );
+      document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener(
+          "keydown",
+          listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
+        );
+        document
+          .querySelector('button[id="back-button"]')
+          .addEventListener(
+            "click",
+            listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
+          );
+      });
 
       function readFromLocalStorage() {
         if (localStorage.getItem("dataForDrawlowEditor")) {
@@ -578,7 +650,7 @@
         .querySelector('button[id="clear-editor"]')
         .addEventListener("click", onClearEditor);
 
-      // Events!
+      // Events - start!
       editor.on("nodeCreated", function (id) {
         // console.log("Node created " + id);
         const blockId = "#node-" + id;
@@ -657,6 +729,7 @@
       editor.on("translate", function (position) {
         //console.log('Translate x:' + position.x + ' y:' + position.y);
       });
+      // Events - end!
 
       /* DRAG EVENT */
 
