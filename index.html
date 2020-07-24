@@ -42,17 +42,25 @@
             <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
           </div>
           <div class="info-and-actions-wrapper">
-            <button class="info-and-actions-button" id="info-button">
+            <!-- <button class="info-and-actions-button" id="info-button">
               <svg class="info-image">
                 <use xlink:href="./images/sprite3.svg#info"></use>
               </svg>
-            </button>
-            <button class="info-and-actions-button" id="back-button">
+            </button> -->
+            <button
+              class="info-and-actions-button"
+              id="back-button"
+              data-title="Отмена действия"
+            >
               <svg class="arrows-image-back">
                 <use xlink:href="./images/sprite3.svg#back"></use>
               </svg>
             </button>
-            <button class="info-and-actions-button hide" id="forward-button">
+            <button
+              class="info-and-actions-button hide"
+              id="forward-button"
+              data-title="Повтор действия"
+            >
               <svg class="arrows-image-forward">
                 <use xlink:href="./images/sprite3.svg#forward"></use>
               </svg>
@@ -593,7 +601,6 @@
           // if press ctrl + y
           if (countPressCtrlPlusZ > 0) {
             if (historyArray.length >= 2) {
-              console.log('"press ctrl + y"');
               editor.import(
                 historyArray[
                   historyArray.length + 2 - (2 + countPressCtrlPlusZ)
