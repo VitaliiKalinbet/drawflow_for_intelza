@@ -41,6 +41,11 @@
           <div class="zoom-wrapper" data-title="Увеличить">
             <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
           </div>
+          <!-- <div class="info-image-wrapper">
+            <svg class="info-image">
+              <use xlink:href="./images/sprite3.svg#info"></use>
+            </svg>
+          </div> -->
         </div>
 
         <div class="group-wrapper">
@@ -89,7 +94,7 @@
             class="btn-wrapper"
             data-title="Очистить поле для создания сценариев"
           >
-            <button onclick="editor.clearModuleSelected()">
+            <button id="clear-editor">
               <img class="clear-img" src="./images/clear.png" />
             </button>
           </div>
@@ -201,6 +206,7 @@
         if (typeOfRightModal === "phrase") {
           let title = exportdata.drawflow.Home.data[blockId].data.title;
           let text = exportdata.drawflow.Home.data[blockId].data.text;
+          let audiolink = exportdata.drawflow.Home.data[blockId].data.audiolink;
           let is_final =
             exportdata.drawflow.Home.data[blockId].data.files.is_final;
           refs.rightModalContent.innerHTML = `
@@ -210,6 +216,9 @@
           <input class="input-text" id="title" type="text" value="${title}">
           <label class="right-modal-label" for="text">Текст:</label>
           <input class="input-text" id="text" type="text" value="${text}">
+
+          <label class="right-modal-label" for="audiolink">Ссылка на аудио файл:</label>
+          <input class="input-text" id="audiolink" type="text" value="${audiolink}">
 
           <label class="right-modal-label" for="text">Аудио:</label>
           <div class="field__wrapper">
@@ -398,6 +407,10 @@
             'input[id="final-input"]'
           ).checked;
           exportdata.drawflow.Home.data[blockId].data.files.is_final = is_final;
+          const audiolink = refs.rightModalContent.querySelector(
+            'input[id="audiolink"]'
+          ).value;
+          exportdata.drawflow.Home.data[blockId].data.audiolink = audiolink;
         } else if (typeOfRightModal === "answer") {
           const title = refs.rightModalContent.querySelector(
             'input[id="title"]'
@@ -466,6 +479,16 @@
             editor.import(data);
           };
           reader.readAsText(file);
+
+          setTimeout(() => {
+            const currentData = editor.export();
+            localStorage.setItem(
+              "dataForDrawlowEditor",
+              JSON.stringify(currentData)
+            );
+          }, 200);
+
+          setTimeout(() => addEventListenerOnBlockTitles(), 500);
         } catch (error) {
           alert("The following error occurred: " + error + ". Try again");
         }
@@ -513,6 +536,7 @@
           if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
             editor.import(clearEditor);
             historyArray = [];
+            localStorage.setItem("dataForDrawlowEditor", "");
             return;
           }
           if (historyArray.length >= 2) {
@@ -521,6 +545,14 @@
             );
             addEventListenerOnBlockTitles();
             countPressCtrlPlusZ = countPressCtrlPlusZ + 1;
+
+            setTimeout(() => {
+              const currentData = editor.export();
+              localStorage.setItem(
+                "dataForDrawlowEditor",
+                JSON.stringify(currentData)
+              );
+            }, 0);
           }
         }
       }
@@ -528,6 +560,23 @@
         "keydown",
         listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
       );
+
+      function readFromLocalStorage() {
+        if (localStorage.getItem("dataForDrawlowEditor")) {
+          let dataFromLS = localStorage.getItem("dataForDrawlowEditor");
+          dataFromLS = JSON.parse(dataFromLS);
+          editor.import(dataFromLS);
+        }
+      }
+      document.addEventListener("DOMContentLoaded", readFromLocalStorage);
+
+      function onClearEditor() {
+        editor.clearModuleSelected();
+        localStorage.setItem("dataForDrawlowEditor", "");
+      }
+      document
+        .querySelector('button[id="clear-editor"]')
+        .addEventListener("click", onClearEditor);
 
       // Events!
       editor.on("nodeCreated", function (id) {
@@ -542,6 +591,10 @@
 
         const currentData = editor.export();
         historyArray.push(currentData);
+        localStorage.setItem(
+          "dataForDrawlowEditor",
+          JSON.stringify(currentData)
+        );
         countPressCtrlPlusZ = 0;
       });
       editor.on("nodeRemoved", function (id) {
@@ -551,6 +604,10 @@
 
         const currentData = editor.export();
         historyArray.push(currentData);
+        localStorage.setItem(
+          "dataForDrawlowEditor",
+          JSON.stringify(currentData)
+        );
         countPressCtrlPlusZ = 0;
       });
       editor.on("connectionCreated", function (connection) {
@@ -561,6 +618,10 @@
 
         const currentData = editor.export();
         historyArray.push(currentData);
+        localStorage.setItem(
+          "dataForDrawlowEditor",
+          JSON.stringify(currentData)
+        );
         countPressCtrlPlusZ = 0;
       });
       editor.on("connectionRemoved", function (connection) {
@@ -571,6 +632,10 @@
 
         const currentData = editor.export();
         historyArray.push(currentData);
+        localStorage.setItem(
+          "dataForDrawlowEditor",
+          JSON.stringify(currentData)
+        );
         countPressCtrlPlusZ = 0;
       });
 
@@ -682,6 +747,7 @@
               {
                 title: "Фраза",
                 text: "",
+                audiolink: "",
                 files: {
                   name: "",
                   type: "",

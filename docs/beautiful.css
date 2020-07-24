@@ -641,3 +641,10 @@ body {
 }
 
 /* styling input type file - end */
+
+.info-image {
+  width: 30px;
+  height: 30px;
+  padding-left: 25px;
+  border-left: 2px solid #cccccc;
+}
