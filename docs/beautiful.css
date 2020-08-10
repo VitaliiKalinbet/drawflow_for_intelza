@@ -98,7 +98,7 @@ body {
   position: relative;
 }
 
-.drag-drawflow:hover::after {
+/* .drag-drawflow:hover::after {
   content: attr(data-title);
   position: absolute;
   left: -20px;
@@ -108,6 +108,38 @@ body {
   font-size: 11px;
   padding: 2px;
   color: black;
+} */
+
+.tooltip-phrase,
+.tooltip-answer,
+.tooltip-sms {
+  position: absolute;
+  top: 70px;
+  left: 45%;
+  width: 20%;
+  background-color: #f7f7f7;
+  padding: 15px;
+  display: none;
+}
+
+.tooltip-phrase h6,
+.tooltip-answer h6,
+.tooltip-sms h6 {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tooltip-phrase p,
+.tooltip-answer p,
+.tooltip-sms p {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .zoom-wrapper {

@@ -1,235 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Drawflow</title>
-  </head>
 
-  <body>
-    <script src="dist/drawflow.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
-      integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs="
-      crossorigin="anonymous"
-    ></script>
-    <link rel="stylesheet" type="text/css" href="dist/drawflow.min.css" />
-    <link rel="stylesheet" type="text/css" href="docs/beautiful.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
-      integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Drawflow</title>
+</head>
 
-    <div class="wrapper">
-      <header class="header">
-        <div class="bar-zoom">
-          <div class="zoom-wrapper" data-title="Уменьшить">
-            <i class="fas fa-search-minus" onclick="editor.zoom_out()"></i>
-          </div>
-          <div class="zoom-wrapper" data-title="Стандартный размер">
-            <i class="fas fa-search" onclick="editor.zoom_reset()"></i>
-          </div>
-          <div class="zoom-wrapper" data-title="Увеличить">
-            <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
-          </div>
-          <div class="info-and-actions-wrapper">
-            <!-- <button class="info-and-actions-button" id="info-button">
+<body>
+  <script src="dist/drawflow.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+    integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="dist/drawflow.min.css" />
+  <link rel="stylesheet" type="text/css" href="docs/beautiful.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+    integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+
+  <div class="wrapper">
+    <header class="header">
+      <div class="bar-zoom">
+        <div class="zoom-wrapper" data-title="Уменьшить">
+          <i class="fas fa-search-minus" onclick="editor.zoom_out()"></i>
+        </div>
+        <div class="zoom-wrapper" data-title="Стандартный размер">
+          <i class="fas fa-search" onclick="editor.zoom_reset()"></i>
+        </div>
+        <div class="zoom-wrapper" data-title="Увеличить">
+          <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
+        </div>
+        <div class="info-and-actions-wrapper">
+          <!-- <button class="info-and-actions-button" id="info-button">
               <svg class="info-image">
                 <use xlink:href="./images/sprite3.svg#info"></use>
               </svg>
             </button> -->
-            <button
-              class="info-and-actions-button"
-              id="back-button"
-              data-title="Отмена действия"
-            >
-              <svg class="arrows-image-back">
-                <use xlink:href="./images/sprite3.svg#back"></use>
-              </svg>
-            </button>
-            <button
-              class="info-and-actions-button hide"
-              id="forward-button"
-              data-title="Повтор действия"
-            >
-              <svg class="arrows-image-forward">
-                <use xlink:href="./images/sprite3.svg#forward"></use>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="group-wrapper">
-          <div
-            class="drag-drawflow"
-            draggable="true"
-            ondragstart="drag(event)"
-            data-node="PHRASE"
-            style="padding-right: 10px;"
-            data-title="Фраза"
-          >
-            <svg class="block-image">
-              <use xlink:href="./images/sprite.svg#phrase"></use>
+          <button class="info-and-actions-button" id="back-button" data-title="Отмена действия">
+            <svg class="arrows-image-back">
+              <use xlink:href="./images/sprite3.svg#back"></use>
             </svg>
-          </div>
-
-          <div
-            class="drag-drawflow"
-            draggable="true"
-            ondragstart="drag(event)"
-            data-node="ANSWER"
-            style="border-right: 2px solid #cccccc; padding-right: 10px;"
-            data-title="Ответ"
-          >
-            <svg class="block-image">
-              <use xlink:href="./images/sprite.svg#answer"></use>
+          </button>
+          <button class="info-and-actions-button hide" id="forward-button" data-title="Повтор действия">
+            <svg class="arrows-image-forward">
+              <use xlink:href="./images/sprite3.svg#forward"></use>
             </svg>
-          </div>
-
-          <div
-            class="drag-drawflow"
-            draggable="true"
-            ondragstart="drag(event)"
-            data-node="SMS"
-            style="margin-left: 30px;"
-            data-title="SMS"
-          >
-            <svg class="block-image">
-              <use xlink:href="./images/sprite.svg#sms"></use>
-            </svg>
-          </div>
+          </button>
         </div>
-
-        <div class="group-wrapper">
-          <div
-            class="btn-wrapper"
-            data-title="Очистить поле для создания сценариев"
-          >
-            <button id="clear-editor">
-              <img class="clear-img" src="./images/clear.png" />
-            </button>
-          </div>
-
-          <div
-            class="btn-wrapper"
-            data-title="Загрузить сохраненный сценарий. Формат json."
-          >
-            <button class="input__wrapper">
-              <input
-                type="file"
-                name="files"
-                id="files"
-                class="input__file"
-                multiple
-                ccept=".json"
-              />
-              <label for="files"
-                ><img
-                  class="input__file-icon"
-                  src="./images/export.png"
-                  alt="Выбрать файл"
-              /></label>
-            </button>
-          </div>
-
-          <div class="btn-wrapper" data-title="Скачать сценарий">
-            <button id="btn-download-json-file">
-              <img class="export-img" src="./images/import.png" />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div class="col-right">
-        <div
-          id="drawflow"
-          ondrop="drop(event)"
-          ondragover="allowDrop(event)"
-        ></div>
       </div>
 
-      <div class="to-close-right-modal hide">
-        <div class="right-modal hide">
-          <svg class="btn-close-right-modal">
-            <use xlink:href="./images/sprite2.svg#close"></use>
+      <div class="group-wrapper">
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="PHRASE"
+          style="padding-right: 10px;" data-title="Фраза">
+          <svg class="block-image">
+            <use xlink:href="./images/sprite.svg#phrase"></use>
           </svg>
-
-          <button class="delete-block">Удалить блок</button>
-
-          <div class="right-modal-content"></div>
         </div>
+
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="ANSWER"
+          style="border-right: 2px solid #cccccc; padding-right: 10px;" data-title="Ответ">
+          <svg class="block-image">
+            <use xlink:href="./images/sprite.svg#answer"></use>
+          </svg>
+        </div>
+
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="SMS" style="margin-left: 30px;"
+          data-title="SMS">
+          <svg class="block-image">
+            <use xlink:href="./images/sprite.svg#sms"></use>
+          </svg>
+        </div>
+      </div>
+
+      <div class="group-wrapper">
+        <div class="btn-wrapper" data-title="Очистить поле для создания сценариев">
+          <button id="clear-editor">
+            <img class="clear-img" src="./images/clear.png" />
+          </button>
+        </div>
+
+        <div class="btn-wrapper" data-title="Загрузить сохраненный сценарий. Формат json.">
+          <button class="input__wrapper">
+            <input type="file" name="files" id="files" class="input__file" multiple ccept=".json" />
+            <label for="files"><img class="input__file-icon" src="./images/export.png" alt="Выбрать файл" /></label>
+          </button>
+        </div>
+
+        <div class="btn-wrapper" data-title="Скачать сценарий">
+          <button id="btn-download-json-file">
+            <img class="export-img" src="./images/import.png" />
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="col-right">
+      <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+
+    <div class="to-close-right-modal hide">
+      <div class="right-modal hide">
+        <svg class="btn-close-right-modal">
+          <use xlink:href="./images/sprite2.svg#close"></use>
+        </svg>
+
+        <button class="delete-block">Удалить блок</button>
+
+        <div class="right-modal-content"></div>
       </div>
     </div>
 
-    <script>
-      var id = document.getElementById("drawflow");
-      const editor = new Drawflow(id);
-      editor.start();
+    <div class="tooltip-phrase">
+      <h6>Фраза</h6>
+      <p>Фраза, которая будет озвучена абоненту. Фразу можно прописать текстом, чтобы озвучить синтетическим
+        голосом или подгрузить аудио-файл.</p>
+    </div>
 
-      let blockId;
-      let typeOfRightModal; // phrase, answer, sms
-      let historyArray = [];
-      let countPressCtrlPlusZ = 0;
-      const clearEditor = editor.export();
+    <div class="tooltip-answer">
+      <h6>Ответ</h6>
+      <p>Предполагаемый ответ клиента. Используется только после Фразы. На каждый вариант ответа нужно создавать
+        отдельный интент.
+      </p>
+    </div>
 
-      const refs = {
-        rightModal: document.querySelector(".right-modal"),
-        toCloseRightModal: document.querySelector(".to-close-right-modal"),
-        closeRightModal: document.querySelector(".btn-close-right-modal"),
-        deleteBlock: document.querySelector(".delete-block"),
-        rightModalContent: document.querySelector(".right-modal-content"),
-        btnSaveInJson: document.querySelector("#btn-download-json-file"),
-      };
-      // so that the right modal close when you click past it:
-      refs.toCloseRightModal.addEventListener("click", (e) => {
-        if (e.target === refs.toCloseRightModal) {
-          closeRightModal();
-        }
-      });
+    <div class="tooltip-sms">
+      <h6>SMS</h6>
+    </div>
+  </div>
 
-      function closeRightModal(e) {
-        // so that changes are saved when you close the module:
-        changeCurrentNode();
+  <script>
+    var id = document.getElementById("drawflow");
+    const editor = new Drawflow(id);
+    editor.start();
 
-        refs.toCloseRightModal.classList.add("hide");
-        refs.rightModal.classList.add("hide");
-        refs.rightModal.removeEventListener("click", closeRightModal);
-        refs.deleteBlock.removeEventListener("click", deleteCurrentBlock);
-        refs.rightModalContent.innerHTML = "";
-        refs.deleteBlock.removeEventListener("click", deleteCurrentBlock);
-        blockId = null;
-        typeOfRightModal = null;
+    let blockId;
+    let typeOfRightModal; // phrase, answer, sms
+    let historyArray = [];
+    let countPressCtrlPlusZ = 0;
+    const clearEditor = editor.export();
 
-        historyArray.push(editor.export());
+    const refs = {
+      rightModal: document.querySelector(".right-modal"),
+      toCloseRightModal: document.querySelector(".to-close-right-modal"),
+      closeRightModal: document.querySelector(".btn-close-right-modal"),
+      deleteBlock: document.querySelector(".delete-block"),
+      rightModalContent: document.querySelector(".right-modal-content"),
+      btnSaveInJson: document.querySelector("#btn-download-json-file"),
+    };
+    // so that the right modal close when you click past it:
+    refs.toCloseRightModal.addEventListener("click", (e) => {
+      if (e.target === refs.toCloseRightModal) {
+        closeRightModal();
       }
+    });
 
-      function deleteCurrentBlock() {
-        refs.rightModalContent.innerHTML = "";
-        editor.removeNodeId("node-" + blockId);
-        refs.rightModal.classList.add("hide");
-        refs.toCloseRightModal.classList.add("hide");
-        blockId = null;
-        typeOfRightModal = null;
-      }
+    function closeRightModal(e) {
+      // so that changes are saved when you close the module:
+      changeCurrentNode();
 
-      function addNodeContentToRightModal() {
-        let exportdata = editor.export();
-        if (typeOfRightModal === "phrase") {
-          let title = exportdata.drawflow.Home.data[blockId].data.title;
-          let text = exportdata.drawflow.Home.data[blockId].data.text;
-          let audiolink = exportdata.drawflow.Home.data[blockId].data.audiolink;
-          let is_final =
-            exportdata.drawflow.Home.data[blockId].data.files.is_final;
-          refs.rightModalContent.innerHTML = `
+      refs.toCloseRightModal.classList.add("hide");
+      refs.rightModal.classList.add("hide");
+      refs.rightModal.removeEventListener("click", closeRightModal);
+      refs.deleteBlock.removeEventListener("click", deleteCurrentBlock);
+      refs.rightModalContent.innerHTML = "";
+      refs.deleteBlock.removeEventListener("click", deleteCurrentBlock);
+      blockId = null;
+      typeOfRightModal = null;
+
+      historyArray.push(editor.export());
+    }
+
+    function deleteCurrentBlock() {
+      refs.rightModalContent.innerHTML = "";
+      editor.removeNodeId("node-" + blockId);
+      refs.rightModal.classList.add("hide");
+      refs.toCloseRightModal.classList.add("hide");
+      blockId = null;
+      typeOfRightModal = null;
+    }
+
+    function addNodeContentToRightModal() {
+      let exportdata = editor.export();
+      if (typeOfRightModal === "phrase") {
+        let title = exportdata.drawflow.Home.data[blockId].data.title;
+        let text = exportdata.drawflow.Home.data[blockId].data.text;
+        let audiolink = exportdata.drawflow.Home.data[blockId].data.audiolink;
+        let is_final =
+          exportdata.drawflow.Home.data[blockId].data.files.is_final;
+        refs.rightModalContent.innerHTML = `
         <div class="phrase-content">
           <h2 class="title-right-modal">Фраза</h2>
           <label class="right-modal-label" for="title">Название:</label>
@@ -252,31 +212,31 @@
           <label class="right-modal-label" for="final-input"><input id="final-input" type="checkbox"> Финальное</label>
         </div>
         `;
-          if (is_final) {
-            refs.rightModalContent
-              .querySelector("#final-input")
-              .setAttribute("checked", true);
-          }
+        if (is_final) {
+          refs.rightModalContent
+            .querySelector("#final-input")
+            .setAttribute("checked", true);
+        }
 
-          workInputTypeFile();
-        } else if (typeOfRightModal === "answer") {
-          let type = exportdata.drawflow.Home.data[blockId].data.type;
-          if (
-            type === "" ||
-            type === "Тишина" ||
-            type === "Непонятно" ||
-            type === "Открытый вопрос" ||
-            type === "Выберите тип"
-          ) {
-            addSimpleAnswerLayoutInRightModal();
-          }
-          if (type === "Интент") {
-            addIntentAnswerLayoutInRightModal();
-          }
-        } else if (typeOfRightModal === "sms") {
-          let title = exportdata.drawflow.Home.data[blockId].data.title;
-          let text = exportdata.drawflow.Home.data[blockId].data.text;
-          refs.rightModalContent.innerHTML = `
+        workInputTypeFile();
+      } else if (typeOfRightModal === "answer") {
+        let type = exportdata.drawflow.Home.data[blockId].data.type;
+        if (
+          type === "" ||
+          type === "Тишина" ||
+          type === "Непонятно" ||
+          type === "Открытый вопрос" ||
+          type === "Выберите тип"
+        ) {
+          addSimpleAnswerLayoutInRightModal();
+        }
+        if (type === "Интент") {
+          addIntentAnswerLayoutInRightModal();
+        }
+      } else if (typeOfRightModal === "sms") {
+        let title = exportdata.drawflow.Home.data[blockId].data.title;
+        let text = exportdata.drawflow.Home.data[blockId].data.text;
+        refs.rightModalContent.innerHTML = `
         <div class="sms-content">
           <h2 class="title-right-modal">SMS</h2>
           <label class="right-modal-label" for="title">Название:</label>
@@ -285,52 +245,52 @@
           <input class="input-text" id="text" type="text" value="${text}">
         </div>
         `;
-        }
       }
+    }
 
-      function workInputTypeFile() {
-        let fields = document.querySelectorAll(".field__file");
-        Array.prototype.forEach.call(fields, function (input) {
-          let label = input.nextElementSibling,
-            labelVal = label.querySelector(".field__file-fake").innerText;
+    function workInputTypeFile() {
+      let fields = document.querySelectorAll(".field__file");
+      Array.prototype.forEach.call(fields, function (input) {
+        let label = input.nextElementSibling,
+          labelVal = label.querySelector(".field__file-fake").innerText;
 
-          input.addEventListener("change", function (e) {
-            let countFiles = "";
-            if (this.files && this.files.length >= 1)
-              countFiles = this.files.length;
+        input.addEventListener("change", function (e) {
+          let countFiles = "";
+          if (this.files && this.files.length >= 1)
+            countFiles = this.files.length;
 
-            if (countFiles)
-              label.querySelector(".field__file-fake").innerText =
-                "Выбрано файлов: " + countFiles;
-            else label.querySelector(".field__file-fake").innerText = labelVal;
-          });
+          if (countFiles)
+            label.querySelector(".field__file-fake").innerText =
+            "Выбрано файлов: " + countFiles;
+          else label.querySelector(".field__file-fake").innerText = labelVal;
         });
+      });
+    }
+
+    function addIntentsToRightModalTextArea(e) {
+      if (e.target.tagName !== "SPAN") return;
+
+      if (e.target.textContent === "Да") {
+        refs.rightModalContent.querySelector(".rigth-modal-textarea").value =
+          "да, возможно, ок, окей, хорошо, пускай, конечно, скорей да, так, знаю, естественно, звичайно, звісно, авжеж";
+      } else if (e.target.textContent === "Нет") {
+        refs.rightModalContent.querySelector(".rigth-modal-textarea").value =
+          "не, нет, нету, не нужно, не стоит, не буду, не хочу, скорей нет, не знаю, нема, звичайно ні, звісно ні, да нет наверное";
+      } else if (e.target.textContent === "Вопрос") {
+        refs.rightModalContent.querySelector(".rigth-modal-textarea").value =
+          "кто, что, когда, зачем, почему, где, как, какой, какая, куда, откуда, насколько, подробней, як";
+      } else if (e.target.textContent === "Повторить") {
+        refs.rightModalContent.querySelector(".rigth-modal-textarea").value =
+          "повторить, повторите, еще раз, не слышно, не расслышала, что что, що, не чутно, голосніше, не розчула";
       }
+    }
 
-      function addIntentsToRightModalTextArea(e) {
-        if (e.target.tagName !== "SPAN") return;
-
-        if (e.target.textContent === "Да") {
-          refs.rightModalContent.querySelector(".rigth-modal-textarea").value =
-            "да, возможно, ок, окей, хорошо, пускай, конечно, скорей да, так, знаю, естественно, звичайно, звісно, авжеж";
-        } else if (e.target.textContent === "Нет") {
-          refs.rightModalContent.querySelector(".rigth-modal-textarea").value =
-            "не, нет, нету, не нужно, не стоит, не буду, не хочу, скорей нет, не знаю, нема, звичайно ні, звісно ні, да нет наверное";
-        } else if (e.target.textContent === "Вопрос") {
-          refs.rightModalContent.querySelector(".rigth-modal-textarea").value =
-            "кто, что, когда, зачем, почему, где, как, какой, какая, куда, откуда, насколько, подробней, як";
-        } else if (e.target.textContent === "Повторить") {
-          refs.rightModalContent.querySelector(".rigth-modal-textarea").value =
-            "повторить, повторите, еще раз, не слышно, не расслышала, что что, що, не чутно, голосніше, не розчула";
-        }
-      }
-
-      function addIntentAnswerLayoutInRightModal() {
-        let exportdata = editor.export();
-        let title = exportdata.drawflow.Home.data[blockId].data.title;
-        let type = exportdata.drawflow.Home.data[blockId].data.type;
-        let intents = exportdata.drawflow.Home.data[blockId].data.intents;
-        refs.rightModalContent.innerHTML = `
+    function addIntentAnswerLayoutInRightModal() {
+      let exportdata = editor.export();
+      let title = exportdata.drawflow.Home.data[blockId].data.title;
+      let type = exportdata.drawflow.Home.data[blockId].data.type;
+      let intents = exportdata.drawflow.Home.data[blockId].data.intents;
+      refs.rightModalContent.innerHTML = `
             <div class="answer-content">
               <h2 class="title-right-modal">Ответ</h2>
               <label class="right-modal-label" for="title">Тип:</label>
@@ -350,19 +310,19 @@
               </div>
             </div>
             `;
-        refs.rightModalContent
-          .querySelector("#intents")
-          .addEventListener("click", addIntentsToRightModalTextArea);
-        refs.rightModalContent
-          .querySelector("select")
-          .addEventListener("change", monitoringIntentTypeOrNoAndAddChangeDOM);
-      }
+      refs.rightModalContent
+        .querySelector("#intents")
+        .addEventListener("click", addIntentsToRightModalTextArea);
+      refs.rightModalContent
+        .querySelector("select")
+        .addEventListener("change", monitoringIntentTypeOrNoAndAddChangeDOM);
+    }
 
-      function addSimpleAnswerLayoutInRightModal() {
-        let exportdata = editor.export();
-        let title = exportdata.drawflow.Home.data[blockId].data.title;
-        let type = exportdata.drawflow.Home.data[blockId].data.type;
-        refs.rightModalContent.innerHTML = `
+    function addSimpleAnswerLayoutInRightModal() {
+      let exportdata = editor.export();
+      let title = exportdata.drawflow.Home.data[blockId].data.title;
+      let type = exportdata.drawflow.Home.data[blockId].data.type;
+      refs.rightModalContent.innerHTML = `
         <div class="answer-content">
           <h2 class="title-right-modal">Ответ</h2>
           <label class="right-modal-label" for="title">Тип:</label>
@@ -377,128 +337,214 @@
           <input class="input-text" id="title" type="text" value="${title}">
         </div>
         `;
-        if (type === "") {
-          refs.rightModalContent
-            .querySelector("select")
-            .querySelector(`option[disabled]`)
-            .setAttribute("selected", true);
-        } else {
-          refs.rightModalContent
-            .querySelector("select")
-            .querySelector(`option[value="${type}"]`)
-            .setAttribute("selected", true);
-        }
+      if (type === "") {
         refs.rightModalContent
           .querySelector("select")
-          .addEventListener("change", monitoringIntentTypeOrNoAndAddChangeDOM);
+          .querySelector(`option[disabled]`)
+          .setAttribute("selected", true);
+      } else {
+        refs.rightModalContent
+          .querySelector("select")
+          .querySelector(`option[value="${type}"]`)
+          .setAttribute("selected", true);
       }
+      refs.rightModalContent
+        .querySelector("select")
+        .addEventListener("change", monitoringIntentTypeOrNoAndAddChangeDOM);
+    }
 
-      function monitoringIntentTypeOrNoAndAddChangeDOM(e) {
-        if (typeOfRightModal !== "answer") return;
-        let exportdata = editor.export();
-        exportdata.drawflow.Home.data[blockId].data.type = e.target.value;
-        editor.import(exportdata);
-        Array.from(e.target.children).forEach((el) => {
-          if (el.hasAttribute("selected")) {
-            el.removeAttribute("selected");
-          }
-        });
-        if (e.target.value === "Интент") {
-          addIntentAnswerLayoutInRightModal();
-        } else {
-          addSimpleAnswerLayoutInRightModal();
+    function monitoringIntentTypeOrNoAndAddChangeDOM(e) {
+      if (typeOfRightModal !== "answer") return;
+      let exportdata = editor.export();
+      exportdata.drawflow.Home.data[blockId].data.type = e.target.value;
+      editor.import(exportdata);
+      Array.from(e.target.children).forEach((el) => {
+        if (el.hasAttribute("selected")) {
+          el.removeAttribute("selected");
         }
+      });
+      if (e.target.value === "Интент") {
+        addIntentAnswerLayoutInRightModal();
+      } else {
+        addSimpleAnswerLayoutInRightModal();
       }
+    }
 
-      function changeCurrentNode() {
-        let exportdata = editor.export();
-        if (typeOfRightModal === "phrase") {
-          const title = refs.rightModalContent.querySelector(
-            'input[id="title"]'
-          ).value;
-          exportdata.drawflow.Home.data[
-            blockId
-          ].html = `<p class="block-title" data-typeofrightmodal="phrase" data-id=${blockId}>${title}</p>`;
-          exportdata.drawflow.Home.data[blockId].data.title = title;
-          const text = refs.rightModalContent.querySelector('input[id="text"]')
+    function changeCurrentNode() {
+      let exportdata = editor.export();
+      if (typeOfRightModal === "phrase") {
+        const title = refs.rightModalContent.querySelector(
+          'input[id="title"]'
+        ).value;
+        exportdata.drawflow.Home.data[
+          blockId
+        ].html = `<p class="block-title" data-typeofrightmodal="phrase" data-id=${blockId}>${title}</p>`;
+        exportdata.drawflow.Home.data[blockId].data.title = title;
+        const text = refs.rightModalContent.querySelector('input[id="text"]')
+          .value;
+        exportdata.drawflow.Home.data[blockId].data.text = text;
+        const is_final = refs.rightModalContent.querySelector(
+          'input[id="final-input"]'
+        ).checked;
+        exportdata.drawflow.Home.data[blockId].data.files.is_final = is_final;
+        const audiolink = refs.rightModalContent.querySelector(
+          'input[id="audiolink"]'
+        ).value;
+        exportdata.drawflow.Home.data[blockId].data.audiolink = audiolink;
+      } else if (typeOfRightModal === "answer") {
+        const title = refs.rightModalContent.querySelector(
+          'input[id="title"]'
+        ).value;
+        exportdata.drawflow.Home.data[
+          blockId
+        ].html = `<p class="block-title" data-typeofrightmodal="answer" data-id=${blockId}>${title}</p>`;
+        exportdata.drawflow.Home.data[blockId].data.title = title;
+        let type = refs.rightModalContent.querySelector("select").value;
+        exportdata.drawflow.Home.data[blockId].data.type = type;
+        if (refs.rightModalContent.querySelector("textarea")) {
+          let intents = refs.rightModalContent.querySelector("textarea")
             .value;
-          exportdata.drawflow.Home.data[blockId].data.text = text;
-          const is_final = refs.rightModalContent.querySelector(
-            'input[id="final-input"]'
-          ).checked;
-          exportdata.drawflow.Home.data[blockId].data.files.is_final = is_final;
-          const audiolink = refs.rightModalContent.querySelector(
-            'input[id="audiolink"]'
-          ).value;
-          exportdata.drawflow.Home.data[blockId].data.audiolink = audiolink;
-        } else if (typeOfRightModal === "answer") {
-          const title = refs.rightModalContent.querySelector(
-            'input[id="title"]'
-          ).value;
-          exportdata.drawflow.Home.data[
-            blockId
-          ].html = `<p class="block-title" data-typeofrightmodal="answer" data-id=${blockId}>${title}</p>`;
-          exportdata.drawflow.Home.data[blockId].data.title = title;
-          let type = refs.rightModalContent.querySelector("select").value;
-          exportdata.drawflow.Home.data[blockId].data.type = type;
-          if (refs.rightModalContent.querySelector("textarea")) {
-            let intents = refs.rightModalContent.querySelector("textarea")
-              .value;
-            exportdata.drawflow.Home.data[blockId].data.intents = intents;
-          }
-        } else if (typeOfRightModal === "sms") {
-          const title = refs.rightModalContent.querySelector(
-            'input[id="title"]'
-          ).value;
-          exportdata.drawflow.Home.data[
-            blockId
-          ].html = `<p class="block-title" data-typeofrightmodal="sms" data-id=${blockId}>${title}</p>`;
-          exportdata.drawflow.Home.data[blockId].data.title = title;
-          const text = refs.rightModalContent.querySelector('input[id="text"]')
-            .value;
-          exportdata.drawflow.Home.data[blockId].data.text = text;
+          exportdata.drawflow.Home.data[blockId].data.intents = intents;
         }
-        editor.import(exportdata);
-        addEventListenerOnBlockTitles();
+      } else if (typeOfRightModal === "sms") {
+        const title = refs.rightModalContent.querySelector(
+          'input[id="title"]'
+        ).value;
+        exportdata.drawflow.Home.data[
+          blockId
+        ].html = `<p class="block-title" data-typeofrightmodal="sms" data-id=${blockId}>${title}</p>`;
+        exportdata.drawflow.Home.data[blockId].data.title = title;
+        const text = refs.rightModalContent.querySelector('input[id="text"]')
+          .value;
+        exportdata.drawflow.Home.data[blockId].data.text = text;
       }
+      editor.import(exportdata);
+      addEventListenerOnBlockTitles();
+    }
 
-      // code for export data in my-download.json - start
-      const saveData = (function () {
-        var a = document.createElement("a");
-        document.body.appendChild(a);
-        a.style = "display: none";
-        return function (data, fileName) {
-          var json = JSON.stringify(data),
-            blob = new Blob([json], {
-              type: "octet/stream",
-            }),
-            url = window.URL.createObjectURL(blob);
-          a.href = url;
-          a.download = fileName;
-          a.click();
-          window.URL.revokeObjectURL(url);
+    // code for export data in my-download.json - start
+    const saveData = (function () {
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      return function (data, fileName) {
+        var json = JSON.stringify(data),
+          blob = new Blob([json], {
+            type: "octet/stream",
+          }),
+          url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      };
+    })();
+
+    function onSaveDataInFileJson() {
+      const data = editor.export();
+      const json = JSON.stringify(data);
+      const fileName = "my-download.json";
+      saveData(json, fileName);
+    }
+    refs.btnSaveInJson.addEventListener("click", onSaveDataInFileJson);
+    // code for export data in my-download.json - end
+
+    // code for import data from someFile.json - start
+    function handleFileSelect(evt) {
+      try {
+        const file = document.getElementById("files").files.item(0);
+        const reader = new FileReader();
+        reader.onload = function () {
+          const data = JSON.parse(JSON.parse(reader.result));
+          editor.import(data);
         };
-      })();
+        reader.readAsText(file);
 
-      function onSaveDataInFileJson() {
-        const data = editor.export();
-        const json = JSON.stringify(data);
-        const fileName = "my-download.json";
-        saveData(json, fileName);
+        setTimeout(() => {
+          const currentData = editor.export();
+          localStorage.setItem(
+            "dataForDrawlowEditor",
+            JSON.stringify(currentData)
+          );
+        }, 200);
+
+        setTimeout(() => addEventListenerOnBlockTitles(), 500);
+      } catch (error) {
+        alert("The following error occurred: " + error + ". Try again");
       }
-      refs.btnSaveInJson.addEventListener("click", onSaveDataInFileJson);
-      // code for export data in my-download.json - end
+    }
+    document
+      .getElementById("files")
+      .addEventListener("change", handleFileSelect, false);
+    // code for import data from someFile.json - end
 
-      // code for import data from someFile.json - start
-      function handleFileSelect(evt) {
-        try {
-          const file = document.getElementById("files").files.item(0);
-          const reader = new FileReader();
-          reader.onload = function () {
-            const data = JSON.parse(JSON.parse(reader.result));
-            editor.import(data);
-          };
-          reader.readAsText(file);
+    function openRightModal(e) {
+      blockId = e.target.dataset.id;
+      if (!blockId) {
+        const id = e.target.closest(".drawflow-node").id;
+        blockId = id.slice(5);
+        blockId = Number(blockId);
+      }
+      typeOfRightModal = e.target.dataset.typeofrightmodal;
+      refs.deleteBlock.removeEventListener("click", deleteCurrentBlock);
+      refs.rightModal.classList.remove("hide");
+      refs.toCloseRightModal.classList.remove("hide");
+      refs.closeRightModal.addEventListener("click", closeRightModal);
+      refs.deleteBlock.addEventListener("click", deleteCurrentBlock);
+      addNodeContentToRightModal(blockId);
+    }
+
+    function addEventListenerOnBlockTitles() {
+      const blockTitles = document.querySelectorAll(".block-title");
+      if (blockTitles.length === 0) return;
+      blockTitles.forEach((element) => {
+        element.addEventListener("click", openRightModal);
+      });
+    }
+
+    function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor(e) {
+      const evtobj = window.event ? event : e;
+
+      if (
+        (evtobj.keyCode == 90 && evtobj.ctrlKey) ||
+        evtobj.target.closest('button[id="back-button"]')
+      ) {
+        // if press ctrl + z
+        const forwardBtn = document.querySelector(
+          'button[id="forward-button"]'
+        );
+        if (forwardBtn.classList.contains("hide")) {
+          forwardBtn.classList.remove("hide");
+          setTimeout(() => {
+            document
+              .querySelector('button[id="forward-button"]')
+              .addEventListener(
+                "click",
+                listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
+              );
+          }, 0);
+        }
+
+        refs.rightModalContent.innerHTML = "";
+        if (!refs.toCloseRightModal.classList.contains("hide")) {
+          refs.toCloseRightModal.classList.add("hide");
+        }
+        if (!refs.rightModal.classList.contains("hide")) {
+          refs.rightModal.classList.add("hide");
+        }
+
+        if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
+          editor.import(clearEditor);
+          // historyArray = [];
+          localStorage.setItem("dataForDrawlowEditor", "");
+          return;
+        }
+        if (historyArray.length >= 2) {
+          editor.import(
+            historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
+          );
+          addEventListenerOnBlockTitles();
+          countPressCtrlPlusZ = countPressCtrlPlusZ + 1;
 
           setTimeout(() => {
             const currentData = editor.export();
@@ -506,85 +552,29 @@
               "dataForDrawlowEditor",
               JSON.stringify(currentData)
             );
-          }, 200);
-
-          setTimeout(() => addEventListenerOnBlockTitles(), 500);
-        } catch (error) {
-          alert("The following error occurred: " + error + ". Try again");
+          }, 0);
         }
-      }
-      document
-        .getElementById("files")
-        .addEventListener("change", handleFileSelect, false);
-      // code for import data from someFile.json - end
-
-      function openRightModal(e) {
-        blockId = e.target.dataset.id;
-        if (!blockId) {
-          const id = e.target.closest(".drawflow-node").id;
-          blockId = id.slice(5);
-          blockId = Number(blockId);
-        }
-        typeOfRightModal = e.target.dataset.typeofrightmodal;
-        refs.deleteBlock.removeEventListener("click", deleteCurrentBlock);
-        refs.rightModal.classList.remove("hide");
-        refs.toCloseRightModal.classList.remove("hide");
-        refs.closeRightModal.addEventListener("click", closeRightModal);
-        refs.deleteBlock.addEventListener("click", deleteCurrentBlock);
-        addNodeContentToRightModal(blockId);
-      }
-
-      function addEventListenerOnBlockTitles() {
-        const blockTitles = document.querySelectorAll(".block-title");
-        if (blockTitles.length === 0) return;
-        blockTitles.forEach((element) => {
-          element.addEventListener("click", openRightModal);
-        });
-      }
-
-      function listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor(e) {
-        const evtobj = window.event ? event : e;
-
-        if (
-          (evtobj.keyCode == 90 && evtobj.ctrlKey) ||
-          evtobj.target.closest('button[id="back-button"]')
-        ) {
-          // if press ctrl + z
-          const forwardBtn = document.querySelector(
-            'button[id="forward-button"]'
-          );
-          if (forwardBtn.classList.contains("hide")) {
-            forwardBtn.classList.remove("hide");
-            setTimeout(() => {
-              document
-                .querySelector('button[id="forward-button"]')
-                .addEventListener(
-                  "click",
-                  listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
-                );
-            }, 0);
-          }
-
-          refs.rightModalContent.innerHTML = "";
-          if (!refs.toCloseRightModal.classList.contains("hide")) {
-            refs.toCloseRightModal.classList.add("hide");
-          }
-          if (!refs.rightModal.classList.contains("hide")) {
-            refs.rightModal.classList.add("hide");
-          }
-
-          if (historyArray.length - (2 + countPressCtrlPlusZ) < 0) {
-            editor.import(clearEditor);
-            // historyArray = [];
-            localStorage.setItem("dataForDrawlowEditor", "");
-            return;
-          }
+      } else if (
+        (evtobj.keyCode == 89 && evtobj.ctrlKey) ||
+        evtobj.target.closest('button[id="forward-button"]')
+      ) {
+        // if press ctrl + y
+        if (countPressCtrlPlusZ > 0) {
           if (historyArray.length >= 2) {
             editor.import(
-              historyArray[historyArray.length - (2 + countPressCtrlPlusZ)]
+              historyArray[
+                historyArray.length + 2 - (2 + countPressCtrlPlusZ)
+              ]
             );
             addEventListenerOnBlockTitles();
-            countPressCtrlPlusZ = countPressCtrlPlusZ + 1;
+            countPressCtrlPlusZ = countPressCtrlPlusZ - 1;
+
+            if (countPressCtrlPlusZ === 0) {
+              const forwardBtn = document.querySelector(
+                'button[id="forward-button"]'
+              );
+              forwardBtn.classList.add("hide");
+            }
 
             setTimeout(() => {
               const currentData = editor.export();
@@ -594,293 +584,289 @@
               );
             }, 0);
           }
-        } else if (
-          (evtobj.keyCode == 89 && evtobj.ctrlKey) ||
-          evtobj.target.closest('button[id="forward-button"]')
-        ) {
-          // if press ctrl + y
-          if (countPressCtrlPlusZ > 0) {
-            if (historyArray.length >= 2) {
-              editor.import(
-                historyArray[
-                  historyArray.length + 2 - (2 + countPressCtrlPlusZ)
-                ]
-              );
-              addEventListenerOnBlockTitles();
-              countPressCtrlPlusZ = countPressCtrlPlusZ - 1;
-
-              if (countPressCtrlPlusZ === 0) {
-                const forwardBtn = document.querySelector(
-                  'button[id="forward-button"]'
-                );
-                forwardBtn.classList.add("hide");
-              }
-
-              setTimeout(() => {
-                const currentData = editor.export();
-                localStorage.setItem(
-                  "dataForDrawlowEditor",
-                  JSON.stringify(currentData)
-                );
-              }, 0);
-            }
-          }
         }
       }
-      document.addEventListener("DOMContentLoaded", () => {
-        document.addEventListener(
-          "keydown",
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener(
+        "keydown",
+        listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
+      );
+      document
+        .querySelector('button[id="back-button"]')
+        .addEventListener(
+          "click",
           listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
         );
-        document
-          .querySelector('button[id="back-button"]')
-          .addEventListener(
-            "click",
-            listenerPressButtonCtrlPlusZAndImportPreviousValueToEditor
+    });
+
+    function readFromLocalStorage() {
+      if (localStorage.getItem("dataForDrawlowEditor")) {
+        let dataFromLS = localStorage.getItem("dataForDrawlowEditor");
+        dataFromLS = JSON.parse(dataFromLS);
+        editor.import(dataFromLS);
+      }
+    }
+    document.addEventListener("DOMContentLoaded", readFromLocalStorage);
+
+    function onClearEditor() {
+      editor.clearModuleSelected();
+      localStorage.setItem("dataForDrawlowEditor", "");
+    }
+    document
+      .querySelector('button[id="clear-editor"]')
+      .addEventListener("click", onClearEditor);
+
+    // Events - start!
+    editor.on("nodeCreated", function (id) {
+      // console.log("Node created " + id);
+      const blockId = "#node-" + id;
+      const blockTitle = document
+        .querySelector(blockId)
+        .querySelector(".block-title");
+      blockTitle.setAttribute("data-id", id);
+
+      addEventListenerOnBlockTitles();
+
+      const currentData = editor.export();
+      historyArray.push(currentData);
+      localStorage.setItem(
+        "dataForDrawlowEditor",
+        JSON.stringify(currentData)
+      );
+      countPressCtrlPlusZ = 0;
+    });
+    editor.on("nodeRemoved", function (id) {
+      // console.log("Node removed " + id);
+
+      addEventListenerOnBlockTitles();
+
+      const currentData = editor.export();
+      historyArray.push(currentData);
+      localStorage.setItem(
+        "dataForDrawlowEditor",
+        JSON.stringify(currentData)
+      );
+      countPressCtrlPlusZ = 0;
+    });
+    editor.on("connectionCreated", function (connection) {
+      // console.log("Connection created");
+      // console.dir(connection);
+
+      addEventListenerOnBlockTitles();
+
+      const currentData = editor.export();
+      historyArray.push(currentData);
+      localStorage.setItem(
+        "dataForDrawlowEditor",
+        JSON.stringify(currentData)
+      );
+      countPressCtrlPlusZ = 0;
+    });
+    editor.on("connectionRemoved", function (connection) {
+      // console.log("Connection removed");
+      // console.log(connection);
+
+      addEventListenerOnBlockTitles();
+
+      const currentData = editor.export();
+      historyArray.push(currentData);
+      localStorage.setItem(
+        "dataForDrawlowEditor",
+        JSON.stringify(currentData)
+      );
+      countPressCtrlPlusZ = 0;
+    });
+
+    editor.on("nodeSelected", function (id) {
+      // console.log("nodeSelected ", id);
+    });
+    editor.on("moduleCreated", function (name) {
+      // console.log("Module Created " + name);
+    });
+    editor.on("moduleChanged", function (name) {
+      // console.log("Module Changed " + name);
+    });
+    editor.on("mouseMove", function (position) {
+      // console.log('Position mouse x:' + position.x + ' y:' + position.y);
+    });
+    editor.on("zoom", function (zoom) {
+      //console.log('Zoom level ' + zoom);
+    });
+    editor.on("translate", function (position) {
+      //console.log('Translate x:' + position.x + ' y:' + position.y);
+    });
+    // Events - end!
+
+    // work with tips for icons question answer sms - start
+    function showTooltip(e) {
+      const type = e.target.closest('.drag-drawflow').dataset.node;
+      if (type === "PHRASE") {
+        document.querySelector('.tooltip-phrase').style.display = "block";
+      } else if (type === "ANSWER") {
+        document.querySelector('.tooltip-answer').style.display = "block";
+      } else if (type === "SMS") {
+        document.querySelector('.tooltip-sms').style.display = "block";
+      }
+    };
+
+    function hideTooltip(e) {
+      const type = e.target.closest('.drag-drawflow').dataset.node;
+      if (type === "PHRASE") {
+        document.querySelector('.tooltip-phrase').style.display = "none";
+      } else if (type === "ANSWER") {
+        document.querySelector('.tooltip-answer').style.display = "none";
+      } else if (type === "SMS") {
+        document.querySelector('.tooltip-sms').style.display = "none";
+      }
+    };
+    document.querySelectorAll(".drag-drawflow").forEach(el => {
+      el.addEventListener("mouseover", showTooltip);
+      el.addEventListener("mouseout", hideTooltip);
+    });
+    // work with tips for icons question answer sms - end
+
+    /* DRAG EVENT */
+
+    /* Mouse and Touch Actions */
+
+    var elements = document.getElementsByClassName("drag-drawflow");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener("touchend", drop, false);
+      elements[i].addEventListener("touchmove", positionMobile, false);
+      elements[i].addEventListener("touchstart", drag, false);
+    }
+
+    var mobile_item_selec = "";
+    var mobile_last_move = null;
+
+    function positionMobile(ev) {
+      mobile_last_move = event;
+    }
+
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      if (ev.type === "touchstart") {
+        mobile_item_selec = ev.target
+          .closest(".drag-drawflow")
+          .getAttribute("data-node");
+      } else {
+        ev.dataTransfer.setData("node", ev.target.getAttribute("data-node"));
+      }
+    }
+
+    function drop(ev) {
+      if (ev.type === "touchend") {
+        var parentdrawflow = document
+          .elementFromPoint(
+            mobile_last_move.touches[0].clientX,
+            mobile_last_move.touches[0].clientY
+          )
+          .closest("#drawflow");
+        if (parentdrawflow != null) {
+          addNodeToDrawFlow(
+            mobile_item_selec,
+            mobile_last_move.touches[0].clientX,
+            mobile_last_move.touches[0].clientY
           );
-      });
-
-      function readFromLocalStorage() {
-        if (localStorage.getItem("dataForDrawlowEditor")) {
-          let dataFromLS = localStorage.getItem("dataForDrawlowEditor");
-          dataFromLS = JSON.parse(dataFromLS);
-          editor.import(dataFromLS);
         }
-      }
-      document.addEventListener("DOMContentLoaded", readFromLocalStorage);
-
-      function onClearEditor() {
-        editor.clearModuleSelected();
-        localStorage.setItem("dataForDrawlowEditor", "");
-      }
-      document
-        .querySelector('button[id="clear-editor"]')
-        .addEventListener("click", onClearEditor);
-
-      // Events - start!
-      editor.on("nodeCreated", function (id) {
-        // console.log("Node created " + id);
-        const blockId = "#node-" + id;
-        const blockTitle = document
-          .querySelector(blockId)
-          .querySelector(".block-title");
-        blockTitle.setAttribute("data-id", id);
-
-        addEventListenerOnBlockTitles();
-
-        const currentData = editor.export();
-        historyArray.push(currentData);
-        localStorage.setItem(
-          "dataForDrawlowEditor",
-          JSON.stringify(currentData)
-        );
-        countPressCtrlPlusZ = 0;
-      });
-      editor.on("nodeRemoved", function (id) {
-        // console.log("Node removed " + id);
-
-        addEventListenerOnBlockTitles();
-
-        const currentData = editor.export();
-        historyArray.push(currentData);
-        localStorage.setItem(
-          "dataForDrawlowEditor",
-          JSON.stringify(currentData)
-        );
-        countPressCtrlPlusZ = 0;
-      });
-      editor.on("connectionCreated", function (connection) {
-        // console.log("Connection created");
-        // console.dir(connection);
-
-        addEventListenerOnBlockTitles();
-
-        const currentData = editor.export();
-        historyArray.push(currentData);
-        localStorage.setItem(
-          "dataForDrawlowEditor",
-          JSON.stringify(currentData)
-        );
-        countPressCtrlPlusZ = 0;
-      });
-      editor.on("connectionRemoved", function (connection) {
-        // console.log("Connection removed");
-        // console.log(connection);
-
-        addEventListenerOnBlockTitles();
-
-        const currentData = editor.export();
-        historyArray.push(currentData);
-        localStorage.setItem(
-          "dataForDrawlowEditor",
-          JSON.stringify(currentData)
-        );
-        countPressCtrlPlusZ = 0;
-      });
-
-      editor.on("nodeSelected", function (id) {
-        // console.log("nodeSelected ", id);
-      });
-      editor.on("moduleCreated", function (name) {
-        // console.log("Module Created " + name);
-      });
-      editor.on("moduleChanged", function (name) {
-        // console.log("Module Changed " + name);
-      });
-      editor.on("mouseMove", function (position) {
-        // console.log('Position mouse x:' + position.x + ' y:' + position.y);
-      });
-      editor.on("zoom", function (zoom) {
-        //console.log('Zoom level ' + zoom);
-      });
-      editor.on("translate", function (position) {
-        //console.log('Translate x:' + position.x + ' y:' + position.y);
-      });
-      // Events - end!
-
-      /* DRAG EVENT */
-
-      /* Mouse and Touch Actions */
-
-      var elements = document.getElementsByClassName("drag-drawflow");
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].addEventListener("touchend", drop, false);
-        elements[i].addEventListener("touchmove", positionMobile, false);
-        elements[i].addEventListener("touchstart", drag, false);
-      }
-
-      var mobile_item_selec = "";
-      var mobile_last_move = null;
-
-      function positionMobile(ev) {
-        mobile_last_move = event;
-      }
-
-      function allowDrop(ev) {
+        mobile_item_selec = "";
+      } else {
         ev.preventDefault();
+        var data = ev.dataTransfer.getData("node");
+        addNodeToDrawFlow(data, ev.clientX, ev.clientY);
       }
+    }
 
-      function drag(ev) {
-        if (ev.type === "touchstart") {
-          mobile_item_selec = ev.target
-            .closest(".drag-drawflow")
-            .getAttribute("data-node");
-        } else {
-          ev.dataTransfer.setData("node", ev.target.getAttribute("data-node"));
-        }
+    function addNodeToDrawFlow(name, pos_x, pos_y) {
+      if (editor.editor_mode === "fixed") {
+        return false;
       }
+      pos_x =
+        pos_x *
+        (editor.precanvas.clientWidth /
+          (editor.precanvas.clientWidth * editor.zoom)) -
+        editor.precanvas.getBoundingClientRect().x *
+        (editor.precanvas.clientWidth /
+          (editor.precanvas.clientWidth * editor.zoom));
+      pos_y =
+        pos_y *
+        (editor.precanvas.clientHeight /
+          (editor.precanvas.clientHeight * editor.zoom)) -
+        editor.precanvas.getBoundingClientRect().y *
+        (editor.precanvas.clientHeight /
+          (editor.precanvas.clientHeight * editor.zoom));
 
-      function drop(ev) {
-        if (ev.type === "touchend") {
-          var parentdrawflow = document
-            .elementFromPoint(
-              mobile_last_move.touches[0].clientX,
-              mobile_last_move.touches[0].clientY
-            )
-            .closest("#drawflow");
-          if (parentdrawflow != null) {
-            addNodeToDrawFlow(
-              mobile_item_selec,
-              mobile_last_move.touches[0].clientX,
-              mobile_last_move.touches[0].clientY
-            );
-          }
-          mobile_item_selec = "";
-        } else {
-          ev.preventDefault();
-          var data = ev.dataTransfer.getData("node");
-          addNodeToDrawFlow(data, ev.clientX, ev.clientY);
-        }
-      }
-
-      function addNodeToDrawFlow(name, pos_x, pos_y) {
-        if (editor.editor_mode === "fixed") {
-          return false;
-        }
-        pos_x =
-          pos_x *
-            (editor.precanvas.clientWidth /
-              (editor.precanvas.clientWidth * editor.zoom)) -
-          editor.precanvas.getBoundingClientRect().x *
-            (editor.precanvas.clientWidth /
-              (editor.precanvas.clientWidth * editor.zoom));
-        pos_y =
-          pos_y *
-            (editor.precanvas.clientHeight /
-              (editor.precanvas.clientHeight * editor.zoom)) -
-          editor.precanvas.getBoundingClientRect().y *
-            (editor.precanvas.clientHeight /
-              (editor.precanvas.clientHeight * editor.zoom));
-
-        switch (name) {
-          case "PHRASE":
-            var PHRASE = `
+      switch (name) {
+        case "PHRASE":
+          var PHRASE = `
           <p class="block-title" data-typeofrightmodal="phrase">Фраза</p>
         `;
-            editor.addNode(
-              "PHRASE",
-              1,
-              1,
-              pos_x,
-              pos_y,
-              "phrase",
-              {
-                title: "Фраза",
-                text: "",
-                audiolink: "",
-                files: {
-                  name: "",
-                  type: "",
-                  link: "",
-                  is_final: false,
-                },
+          editor.addNode(
+            "PHRASE",
+            1,
+            1,
+            pos_x,
+            pos_y,
+            "phrase", {
+              title: "Фраза",
+              text: "",
+              audiolink: "",
+              files: {
+                name: "",
+                type: "",
+                link: "",
+                is_final: false,
               },
-              PHRASE
-            );
-            break;
+            },
+            PHRASE
+          );
+          break;
 
-          case "ANSWER":
-            var ANSWER = `
+        case "ANSWER":
+          var ANSWER = `
           <p class="block-title" data-typeofrightmodal="answer">Ответ</p>
           `;
-            editor.addNode(
-              "ANSWER",
-              1,
-              1,
-              pos_x,
-              pos_y,
-              "answer",
-              {
-                title: "Ответ",
-                type: "",
-                intents: "",
-              },
-              ANSWER
-            );
-            break;
+          editor.addNode(
+            "ANSWER",
+            1,
+            1,
+            pos_x,
+            pos_y,
+            "answer", {
+              title: "Ответ",
+              type: "",
+              intents: "",
+            },
+            ANSWER
+          );
+          break;
 
-          case "SMS":
-            var SMS = `
+        case "SMS":
+          var SMS = `
           <p class="block-title" data-typeofrightmodal="sms">SMS</p>
           `;
-            editor.addNode(
-              "SMS",
-              1,
-              1,
-              pos_x,
-              pos_y,
-              "sms",
-              {
-                title: "SMS",
-                text: "",
-              },
-              SMS
-            );
-            break;
+          editor.addNode(
+            "SMS",
+            1,
+            1,
+            pos_x,
+            pos_y,
+            "sms", {
+              title: "SMS",
+              text: "",
+            },
+            SMS
+          );
+          break;
 
-          default:
-        }
+        default:
       }
-    </script>
-  </body>
+    }
+  </script>
+</body>
+
 </html>
