@@ -114,6 +114,7 @@ body {
 .tooltip-answer,
 .tooltip-sms {
   position: absolute;
+  z-index: 10;
   top: 70px;
   left: 45%;
   width: 20%;
