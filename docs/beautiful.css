@@ -591,6 +591,7 @@ body {
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
+  position: relative;
 }
 
 .right-modal-intents span {
@@ -724,4 +725,52 @@ body {
   padding: 2px;
   color: black;
   background: white;
+}
+
+.question {
+  font-weight: 900;
+  cursor: help;
+  padding: 10px;
+}
+
+label {
+  position: relative;
+}
+
+.tooltip-div {
+  position: absolute;
+  top: 35px;
+  right: 50px;
+  width: 300px;
+  padding: 10px;
+  background-color: #fff;
+  z-index: 5;
+  -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  border-radius: 10px;
+}
+
+.tooltip-div ul {
+  margin: 0;
+}
+
+.tooltip-div li {
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+}
+
+.answerType-title {
+  margin: 5px 0 5px 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: #000;
+}
+
+.answerType-text {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
 }

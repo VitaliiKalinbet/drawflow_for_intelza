@@ -192,7 +192,7 @@
         refs.rightModalContent.innerHTML = `
         <div class="phrase-content">
           <h2 class="title-right-modal">Фраза</h2>
-          <label class="right-modal-label" for="title">Название:</label>
+          <label class="right-modal-label" for="title">Название: <span class="question" data-type="name">?</span></label>
           <input class="input-text" id="title" type="text" value="${title}">
           <label class="right-modal-label" for="text">Текст:</label>
           <input class="input-text" id="text" type="text" value="${text}">
@@ -200,7 +200,7 @@
           <label class="right-modal-label" for="audiolink">Ссылка на аудио файл:</label>
           <input class="input-text" id="audiolink" type="text" value="${audiolink}">
 
-          <label class="right-modal-label" for="text">Аудио:</label>
+          <label class="right-modal-label" for="text">Аудио: <span class="question" data-type="audio">?</span></label>
           <div class="field__wrapper">
               <input name="file" type="file" name="file" id="field__file-2" class="field field__file" multiple>
               <label class="field__file-wrapper" for="field__file-2">
@@ -209,7 +209,7 @@
               </label>
           </div>
 
-          <label class="right-modal-label" for="final-input"><input id="final-input" type="checkbox"> Финальное</label>
+          <label class="right-modal-label" for="final-input"><input id="final-input" type="checkbox"> Финальное <span class="question" data-type="final">?</span></label>
         </div>
         `;
         if (is_final) {
@@ -219,6 +219,14 @@
         }
 
         workInputTypeFile();
+
+        const questionTooltipsArr = document.querySelectorAll(".question");
+        if (questionTooltipsArr.length !== 0) {
+          questionTooltipsArr.forEach((element) => {
+            element.addEventListener('mouseover', addTooltipOnAnswerTypeQuestion);
+            element.addEventListener('mouseout', removeTooltipFromAnswerTypeQuestion);
+          });
+        };
       } else if (typeOfRightModal === "answer") {
         let type = exportdata.drawflow.Home.data[blockId].data.type;
         if (
@@ -239,12 +247,20 @@
         refs.rightModalContent.innerHTML = `
         <div class="sms-content">
           <h2 class="title-right-modal">SMS</h2>
-          <label class="right-modal-label" for="title">Название:</label>
+          <label class="right-modal-label" for="title">Название: <span class="question" data-type="name">?</span></label>
           <input class="input-text" id="title" type="text" value="${title}">
           <label class="right-modal-label" for="text">Текст:</label>
           <input class="input-text" id="text" type="text" value="${text}">
         </div>
         `;
+
+        const questionTooltipsArr = document.querySelectorAll(".question");
+        if (questionTooltipsArr.length !== 0) {
+          questionTooltipsArr.forEach((element) => {
+            element.addEventListener('mouseover', addTooltipOnAnswerTypeQuestion);
+            element.addEventListener('mouseout', removeTooltipFromAnswerTypeQuestion);
+          });
+        };
       }
     }
 
@@ -293,7 +309,7 @@
       refs.rightModalContent.innerHTML = `
             <div class="answer-content">
               <h2 class="title-right-modal">Ответ</h2>
-              <label class="right-modal-label" for="title">Тип:</label>
+              <label class="right-modal-label" for="title">Тип: <span class="question" data-type="answerType">?</span></label>
               <select class="right-modal-select" size="1">
                 <option disabled value="Выберите тип">Выберите тип</option>
                 <option value="Непонятно">Непонятно</option>
@@ -301,21 +317,30 @@
                 <option value="Открытый вопрос">Открытый вопрос</option>
                 <option selected value="Интент">Интент</option>
               </select>
-              <label class="right-modal-label" for="title">Название:</label>
+              <label class="right-modal-label" for="title">Название: <span class="question" data-type="name">?</span></label>
               <input class="input-text" id="title" type="text" value="${title}">
-              <label class="right-modal-label" for="textarea">Свои интенты:</label>
+              <label class="right-modal-label" for="textarea">Свои интенты: <span class="question" data-type="intents">?</span></label>
               <textarea rows="3" class="rigth-modal-textarea" id="textarea" type="text">${intents}</textarea>
               <div class="right-modal-intents" id="intents">
-                <span>Да</span><span>Нет</span><span>Вопрос</span><span>Повторить</span>
+                <span>Да</span><span>Нет</span><span>Вопрос</span><span>Повторить</span><span class="question" data-type="intentsExample">?</span>
               </div>
             </div>
             `;
+
       refs.rightModalContent
         .querySelector("#intents")
         .addEventListener("click", addIntentsToRightModalTextArea);
       refs.rightModalContent
         .querySelector("select")
         .addEventListener("change", monitoringIntentTypeOrNoAndAddChangeDOM);
+
+      const questionTooltipsArr = document.querySelectorAll(".question");
+      if (questionTooltipsArr.length !== 0) {
+        questionTooltipsArr.forEach((element) => {
+          element.addEventListener('mouseover', addTooltipOnAnswerTypeQuestion);
+          element.addEventListener('mouseout', removeTooltipFromAnswerTypeQuestion);
+        });
+      };
     }
 
     function addSimpleAnswerLayoutInRightModal() {
@@ -325,7 +350,7 @@
       refs.rightModalContent.innerHTML = `
         <div class="answer-content">
           <h2 class="title-right-modal">Ответ</h2>
-          <label class="right-modal-label" for="title">Тип:</label>
+          <label class="right-modal-label" for="title">Тип: <span class="question" data-type="answerType">?</span></label>
           <select class="right-modal-select" size="1">
             <option disabled value="Выберите тип">Выберите тип</option>
             <option value="Непонятно">Непонятно</option>
@@ -333,7 +358,7 @@
             <option value="Открытый вопрос">Открытый вопрос</option>
             <option value="Интент">Интент</option>
           </select>
-          <label class="right-modal-label" for="title">Название:</label>
+          <label class="right-modal-label" for="title">Название: <span class="question" data-type="name">?</span></label>
           <input class="input-text" id="title" type="text" value="${title}">
         </div>
         `;
@@ -351,6 +376,62 @@
       refs.rightModalContent
         .querySelector("select")
         .addEventListener("change", monitoringIntentTypeOrNoAndAddChangeDOM);
+
+      const questionTooltipsArr = document.querySelectorAll(".question");
+      if (questionTooltipsArr.length !== 0) {
+        questionTooltipsArr.forEach((element) => {
+          element.addEventListener('mouseover', addTooltipOnAnswerTypeQuestion);
+          element.addEventListener('mouseout', removeTooltipFromAnswerTypeQuestion);
+        });
+      };
+    }
+
+    function addTooltipOnAnswerTypeQuestion(e) {
+      const isTooltipPresent = refs.rightModalContent.querySelector('.tooltip-div');
+      if (isTooltipPresent === null) {
+        const type = e.target.dataset.type;
+        console.log('type :>> ', type);
+
+        let div = document.createElement('div');
+        div.className = "tooltip-div";
+        if (type === "answerType") {
+          div.innerHTML =
+            "<h3 class='answerType-title'>Непонятно</h3><p class='answerType-text'>Показывает к какой фразе роботу переходить, если ни один из вариантов ответов (Интенты) не подходит. Если связь не настроена, робот будет выдавать ошибку и ложить трубку.</p><h3 class='answerType-title'>Тишина</h3><p class='answerType-text'>Что делать роботу, когда он не получает ответа для распознавания. Если связь не настроена робот будет идти по сценарию “Непонятно”.</p><h3 class='answerType-title'>Открытый вопрос</h3><p class='answerType-text'>Робот просто транскрибирует ответ абонента, записывает его и дальше ведет по цепочке, согласно настроенным связям.</p><h3 class='answerType-title'>Интент</h3><p class='answerType-text'>В этом блоке вы прописываете предполагаемые ответы абонента, чтобы дальше простроить связи.</p>";
+          const tooltipContainer = refs.rightModalContent.querySelector("span[data-type='answerType']");
+          tooltipContainer.append(div);
+        } else if (type === "name") {
+          div.innerHTML =
+            "<p class='answerType-text'>Это название будет отображено в визуальном редакторе.</p>";
+          const tooltipContainer = refs.rightModalContent.querySelector("span[data-type='name']");
+          tooltipContainer.append(div);
+        } else if (type === "intents") {
+          div.innerHTML =
+            "<p class='answerType-text'>Предполагаемые ответы от абонента. Прописывайте через запятую.</p>";
+          const tooltipContainer = refs.rightModalContent.querySelector("span[data-type='intents']");
+          tooltipContainer.append(div);
+        } else if (type === "intentsExample") {
+          div.innerHTML =
+            "<p class='answerType-text'>Шаблоны предполагаемых ответов от абонента.</p>";
+          const tooltipContainer = refs.rightModalContent.querySelector("span[data-type='intentsExample']");
+          tooltipContainer.append(div);
+        } else if (type === "audio") {
+          div.innerHTML =
+            "<p class='answerType-text'>Рекомендации для загружаемых аудио:</p><ul><li>исходящие звонки: формат wav, 1 канал(моно), кодирование 16bit (PCM), частота дискретизации 8-48 кГц</li><li>размер файла не более 10МБ</li></ul>";
+          const tooltipContainer = refs.rightModalContent.querySelector("span[data-type='audio']");
+          tooltipContainer.append(div);
+        } else if (type === "final") {
+          div.innerHTML =
+            "<p class='answerType-text'>После этой Фразы робот положит трубку.</p>";
+          const tooltipContainer = refs.rightModalContent.querySelector("span[data-type='final']");
+          tooltipContainer.append(div);
+        }
+      };
+    }
+
+    function removeTooltipFromAnswerTypeQuestion() {
+      const element = refs.rightModalContent.querySelector('.tooltip-div');
+      if (element === null) return;
+      element.remove();
     }
 
     function monitoringIntentTypeOrNoAndAddChangeDOM(e) {
@@ -697,6 +778,9 @@
       //console.log('Translate x:' + position.x + ' y:' + position.y);
     });
     // Events - end!
+
+    // addEventListenerOnBlockTitles with timeout after download scheme from LS:
+    setTimeout(() => addEventListenerOnBlockTitles(), 1000);
 
     // work with tips for icons question answer sms - start
     function showTooltip(e) {
