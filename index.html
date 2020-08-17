@@ -33,11 +33,11 @@
           <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
         </div>
         <div class="info-and-actions-wrapper">
-          <!-- <button class="info-and-actions-button" id="info-button">
-              <svg class="info-image">
-                <use xlink:href="./images/sprite3.svg#info"></use>
-              </svg>
-            </button> -->
+          <button class="info-and-actions-button" id="info-button" data-title="Информация">
+            <svg class="info-image">
+              <use xlink:href="./images/sprite3.svg#info"></use>
+            </svg>
+          </button>
           <button class="info-and-actions-button" id="back-button" data-title="Отмена действия">
             <svg class="arrows-image-back">
               <use xlink:href="./images/sprite3.svg#back"></use>
@@ -128,6 +128,39 @@
     <div class="tooltip-sms">
       <h6>SMS</h6>
     </div>
+
+    <div class="to-close-info-modal" data-type="close-info-modal">
+      <div class="info-modal-content">
+        <button class="btn-close-info-modal" id="btn-close-info-modal">
+          <svg class="btn-close-info-modal-icon">
+            <use xlink:href="./images/sprite2.svg#close"></use>
+          </svg>
+        </button>
+
+        <h2>Информация об использовании интерфейса</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt corporis odio tempore asperiores quo eaque,
+          voluptatum commodi inventore rerum totam adipisci enim. Est cumque et sit temporibus aut doloremque,
+          consequatur, commodi numquam quibusdam doloribus eveniet nobis exercitationem dolorem fugit culpa repudiandae
+          maxime eaque adipisci sapiente quisquam vel nihil saepe laudantium.</p>
+
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem perferendis vero doloremque fugit beatae ipsum
+          modi laborum nobis dolorem error?</p>
+
+        <h3>С чего начать</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem perferendis vero doloremque fugit beatae ipsum
+          modi laborum nobis dolorem error?</p>
+
+        <h3>Как пользоваться</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem perferendis vero doloremque fugit beatae ipsum
+          modi laborum nobis dolorem error?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem perferendis vero doloremque fugit beatae ipsum
+          modi laborum nobis dolorem error?</p>
+
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/h9sYQV5x8Wg" frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+      </div>
+    </div>
   </div>
 
   <script>
@@ -148,6 +181,10 @@
       deleteBlock: document.querySelector(".delete-block"),
       rightModalContent: document.querySelector(".right-modal-content"),
       btnSaveInJson: document.querySelector("#btn-download-json-file"),
+
+      toCloseInfoModal: document.querySelector(".to-close-info-modal"),
+      infoButton: document.querySelector("#info-button"),
+      btnCloseInfoModal: document.querySelector('#btn-close-info-modal'),
     };
     // so that the right modal close when you click past it:
     refs.toCloseRightModal.addEventListener("click", (e) => {
@@ -697,6 +734,34 @@
     document
       .querySelector('button[id="clear-editor"]')
       .addEventListener("click", onClearEditor);
+
+    function openInfoModal() {
+      refs.toCloseInfoModal.style.display = "flex";
+      setTimeout(() => {
+        refs.btnCloseInfoModal.addEventListener('click', closeInfoModal);
+        document.body.addEventListener('keyup', keyPressEscape);
+      }, 200);
+    }
+    refs.infoButton.addEventListener("click", openInfoModal);
+
+    function closeInfoModal(e) {
+      if (e.target.dataset.type === "close-info-modal") {
+        refs.toCloseInfoModal.style.display = "none";
+        document.body.removeEventListener('keyup', keyPressEscape);
+      } else if (e.target.closest('button')) {
+        if (e.target.closest('button').id === "btn-close-info-modal") {
+          refs.toCloseInfoModal.style.display = "none";
+          document.body.removeEventListener('keyup', keyPressEscape);
+        }
+      }
+    }
+    refs.toCloseInfoModal.addEventListener('click', closeInfoModal);
+
+    function keyPressEscape(e) {
+      if (e.key === "Escape") {
+        refs.toCloseInfoModal.style.display = "none";
+      }
+    }
 
     // Events - start!
     editor.on("nodeCreated", function (id) {
